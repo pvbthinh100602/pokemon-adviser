@@ -1,8 +1,8 @@
-# Tiến độ Radical Red
+# Radical Red progress
 
-- Badge: ?/8
-- Vị trí hiện tại: ?
+- Badges: ?/8
+- Current location: ?
 - Team: Sprigatito (starter), ...
-- Đang kẹt ở: ?
+- Stuck on: ?
 
-_Agent cập nhật file này sau mỗi mốc lớn._
+_The agent updates this file after each milestone._

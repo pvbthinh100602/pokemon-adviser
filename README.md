@@ -1,24 +1,24 @@
 # pokemon-adviser
 
-Repo cho một AI agent đóng vai "adviser" đi cùng t chơi Pokémon. Game hiện tại: **Pokémon Radical Red v4.1** (ROM hack FireRed), chơi trên **mGBA 0.10.5** (Windows), Normal mode, Minimal Grinding, starter Sprigatito.
+A repo for an AI agent that acts as an "adviser" while I play Pokémon. Current game: **Pokémon Radical Red v4.1** (a FireRed ROM hack), played on **mGBA 0.10.5** (Windows), Normal mode, Minimal Grinding, starter Sprigatito.
 
-## Ý tưởng
+## Idea
 
-1. `logger/rr_logger.lua` chạy trong mGBA, ghi lại quá trình chơi live (đổi map, trận đấu, bắt Pokémon, lên level, tiến hóa, badge, đổi team...) ra file.
-2. Agent đọc log + snapshot để biết t đang ở đâu, team ra sao, rồi tư vấn: build team, type matchup, chiến thuật boss, chỗ bắt Pokémon / lấy item.
-3. `progress/` lưu tiến độ tóm tắt để agent nhớ qua các phiên.
+1. `logger/rr_logger.lua` runs inside mGBA and logs the playthrough live to files (map changes, battles, catches, level-ups, evolutions, badges, team changes, ...).
+2. The agent reads the log and snapshot to know where I am and what my team looks like, then gives advice: team building, type matchups, boss strategies, where to catch Pokémon or find items.
+3. `progress/` keeps a summary of progress so the agent remembers across sessions.
 
-## Cấu trúc
+## Layout
 
-| Đường dẫn | Nội dung |
+| Path | Contents |
 |---|---|
-| `AGENTS.md` | Hướng dẫn cho agent adviser (vai trò, nguồn tham khảo, luật) |
-| `logger/` | Script Lua cho mGBA + hướng dẫn cài |
-| `progress/` | Tiến độ chơi (badge, team, chỗ đang kẹt) |
-| `docs/references.md` | Nguồn tham khảo chính thức |
+| `AGENTS.md` | Instructions for the adviser agent (role, references, rules) |
+| `logger/` | Lua script for mGBA + setup guide |
+| `progress/` | Playthrough progress (badges, team, where I'm stuck) |
+| `docs/references.md` | Reference sources |
 
-## Cài logger nhanh
+## Quick logger setup
 
-mGBA > Tools > Scripting > File > Load script > chọn `logger/rr_logger.lua`. Giữ cửa sổ Scripting mở. Log mặc định ghi vào `D:/pokemon-adviser/rr-log/` (xem `logger/README.md`).
+mGBA > Tools > Scripting > File > Load script > pick `logger/rr_logger.lua`. Keep the Scripting window open. Logs go to `D:/pokemon-adviser/rr-log/` by default (see `logger/README.md`).
 
-> Repo này không chứa và không bao giờ link tới file ROM.
+> This repo does not contain, and will never link to, any ROM file.

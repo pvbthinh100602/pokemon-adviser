@@ -1,45 +1,42 @@
-# rr_logger – cho Pika "xem" m chơi Radical Red
+# rr_logger – let the adviser "watch" a Radical Red playthrough
 
-Script Lua này chạy trong mGBA, cứ khoảng nửa giây đọc RAM game một lần rồi ghi ra file. Nó chỉ đọc, không sửa gì trong game, nên save của m vẫn an toàn.
+This Lua script runs inside mGBA, reads game RAM roughly every half second, and writes what it sees to files. It only reads; it never modifies the game, so saves are safe.
 
-## Cài (làm 1 lần)
+## Setup (once)
 
-1. Cần **mGBA 0.10 trở lên** (Help > About để xem version).
-2. Copy `rr_logger.lua` vào đâu cũng được, ví dụ `C:\Users\phamv\Documents\rr-log\`.
-3. Mặc định log được ghi vào `D:/pokemon-adviser/rr-log/`. Muốn đổi thì mở file `.lua`, sửa dòng `OUT_DIR` ở đầu file (dùng dấu `/`). Để `""` thì log nằm chung thư mục với script.
-   - Nếu thư mục chưa có, script tự tạo (có thể nháy lên cái cửa sổ cmd đen 1 giây, kệ nó). Tạo không được thì nó ghi vào thư mục chứa script.
+1. Requires **mGBA 0.10 or newer** (Help > About shows the version).
+2. Logs go to `D:/pokemon-adviser/rr-log/` by default. To change that, edit the `OUT_DIR` line at the top of the `.lua` file (use `/`). Set it to `""` to write logs next to the script.
+   - If the folder doesn't exist the script creates it (a black cmd window may flash for a second). If that fails, it writes next to the script.
 
-## Mỗi lần chơi
+## Every session
 
-1. Mở mGBA, load ROM Radical Red.
+1. Open mGBA and load the Radical Red ROM.
 2. **Tools > Scripting...**
-3. Trong cửa sổ Scripting: **File > Load script** rồi chọn `rr_logger.lua`.
-4. **Đừng tắt cửa sổ Scripting** (thu nhỏ thì được). Tắt là script ngừng ghi.
-5. Load file trước hay sau khi mở game đều được. Lần đầu nó quét ROM mất khoảng 1 giây để lấy tên Pokémon, chiêu, ability, item.
+3. In the Scripting window: **File > Load script** and pick `rr_logger.lua`.
+4. **Keep the Scripting window open** (minimizing is fine). Closing it stops logging.
+5. Loading the script before or after starting the game both work. On first load it scans the ROM for about a second to find Pokémon, move, ability and item names.
 
-Trong khung console m sẽ thấy mấy dòng `[rr] {...}` mỗi khi có chuyện xảy ra, vậy là script đang chạy ngon.
+The console shows `[rr] {...}` lines whenever something happens, which means the script is running.
 
-## File nó ghi ra
+## Output files
 
-| File | Là gì |
+| File | What it is |
 |---|---|
-| `rr_events.jsonl` | Nhật ký live, mỗi dòng là 1 sự kiện, có giờ và số frame. Chỉ ghi nối thêm, xoá lúc nào cũng được. |
-| `rr_snapshot.json` | Trạng thái hiện tại: team (level, HP, chiêu + PP, ability, nature, item, IV/EV), badge, vị trí, tiền, giờ chơi, đang đánh ai, 25 sự kiện gần nhất. Cứ vài giây ghi đè lại. |
-| `rr_rom_tables.json` | Thông tin chẩn đoán: script có tìm được bảng tên trong ROM không. |
+| `rr_events.jsonl` | Live log, one event per line with timestamp and frame number. Append-only; safe to delete anytime. |
+| `rr_snapshot.json` | Current state: team (level, HP, moves + PP, ability, nature, item, IVs/EVs), badges, location, money, play time, current opponent, last 25 events. Overwritten every few seconds. |
+| `rr_rom_tables.json` | Diagnostics: whether the script found the name tables in the ROM. |
 
-Sự kiện được log: vào map mới, bắt đầu/kết thúc trận (wild hay trainer, đối thủ là con gì level mấy, thắng/thua/chạy/bắt), máu lên xuống và chiêu được dùng trong trận, đổi con, ngất, bắt được Pokémon, thêm/bớt con trong team, lên level, tiến hoá, học/quên chiêu, đổi item cầm, lấy badge, whiteout, tiền thay đổi, load save state.
+Logged events: map changes, battle start/end (wild or trainer, opponent species and level, win/lose/run/caught), HP changes and moves used in battle, switches, faints, catches, party additions/removals, level-ups, evolutions, learned/forgotten moves, held item changes, badges, whiteouts, money changes, save state loads.
 
-Muốn t xem thì nói kiểu "Pika xem log đi". T sẽ đọc `rr_snapshot.json` với đoạn cuối `rr_events.jsonl` trên máy m (lúc đó m bấm duyệt cho t đọc file).
+## Test these first
 
-## Mấy cái nên test trước
+1. Load the script, enter the game, walk a few steps, and open `rr_rom_tables.json` to check for any `NOT FOUND`. If `species`/`moves` are NOT FOUND, the log only has numeric IDs instead of names.
+2. Open `rr_snapshot.json` and compare the team with the in-game Summary screen: level, HP, moves, nature, ability.
+3. Fight one wild battle (run once, catch once) and one trainer battle, and check `rr_events.jsonl` for `battle_start` / `battle_end` with the correct outcome.
+4. Change maps and check for `map_change`. Map names only exist for Kanto; unknown places show as numbers.
 
-1. Load script, vào game, đi vài bước, mở `rr_rom_tables.json` xem có chỗ nào ghi `NOT FOUND` không. Nếu `species`/`moves` bị NOT FOUND thì log chỉ có số ID, không có tên. Gửi t file đó là t sửa.
-2. Mở `rr_snapshot.json`, so team với màn hình Summary trong game: level, HP, chiêu, nature, ability.
-3. Đánh 1 trận wild, thử chạy trốn, rồi đánh 1 trận trainer. Xem `rr_events.jsonl` có `battle_start` / `battle_end` với outcome đúng không.
-4. Đổi map xem có `map_change` không. Tên map chỉ có cho vùng Kanto, chỗ nào lạ thì chỉ có số.
+## Notes
 
-## Lưu ý
-
-- Load save state thoải mái: script tự nhận ra (event `state_jump`) và chụp lại trạng thái mới. Chỉ là mấy event xảy ra ngay quanh lúc load có thể bị thiếu.
-- Một số thứ còn là đoán (xem phần "chưa chắc" trong báo cáo của t). Thấy sai thì nói t.
-- Muốn bớt spam (ví dụ không muốn log từng phát mất máu) thì sửa `LOG_BATTLE_DETAIL = false` ở đầu file.
+- Loading save states is fine: the script detects it (`state_jump` event) and re-baselines. Events right around the load may be missed.
+- Some parts are still unverified against the real ROM (name-table scanning, natures after mints, badge flags, trainer names shown as IDs only). Report anything that looks wrong.
+- To reduce noise (e.g. no per-hit HP logging), set `LOG_BATTLE_DETAIL = false` at the top of the file.
