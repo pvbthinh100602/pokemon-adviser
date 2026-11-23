@@ -1,20 +1,20 @@
 local M = dofile("mock.lua")
-local src = io.open("/workspace/rr-logger/rr_logger.lua"):read("a")
+local src = io.open("../rr_logger.lua"):read("a")
 src = src:gsub('OUT_DIR             = "[^"]*"', 'OUT_DIR = "' .. (os.getenv('PWD') or '.') .. '/out/"')
 os.execute("rm -rf out && mkdir -p out")
-assert(load(src, "@/workspace/rr-logger/rr_logger.lua"))()
+assert(load(src, "@../rr_logger.lua"))()
 local P = 0x02024284
 -- title screen: no party
 M.run(100)
 -- game loaded: Pikachu lv5 slot1
 M.w8(0x02024029, 1)
-M.mon(P, 0x12345679, 0xABCD1234, "Sparky", 25, 0, {1, 84}, 5, 20, 20, 0xBFFFFFFF) -- hidden bit set
+M.mon(P, 0x12345679, 0xABCD1234, "Sparky", 25, 23, {1, 84}, 5, 20, 20, 0xBFFFFFFF) -- hidden bit set, holds item 23
 M.run(100)
 -- walk to route 1
 M.w8(M.SB1+4, 3) M.w8(M.SB1+5, 19) M.w8(0x02036DFC+0x14, 0x65) M.run(40)
 -- wild battle vs Bulbasaur
 local E = 0x0202402C
-M.mon(E, 0x1111, 0x2222, "BULBASAUR", 1, 0, {33}, 3, 15, 15)
+M.mon(E, 0x1111, 0x2222, "BULBASAUR", 1, 999, {33}, 3, 15, 15) -- item id beyond table -> "#999"
 M.w32(0x02022B4C, 0x4) M.w8(0x02023E8A, 0) M.w8(0x030030F0+0x439, 2) M.run(20)
 M.w16(0x02023D98, 84) M.w16(E+0x56, 7) M.run(12)  -- thundershock
 M.w16(0x02023D98+2, 33) M.w16(P+0x56, 16) M.run(12)

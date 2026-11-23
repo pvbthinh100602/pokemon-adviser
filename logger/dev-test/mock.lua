@@ -18,7 +18,11 @@ put(0x123457, table.concat(spT))
 -- moves stride 13
 put(0x200001, enc("-",13)..enc("Pound",13)..enc("Karate Chop",13)..enc("Double Slap",13)..string.rep(enc("Tackle",13),80)..enc("Thunder Shock",13))
 -- abilities stride 17
-put(0x210000, enc("-------",17)..enc("Stench",17)..enc("Drizzle",17)..string.rep(enc("Filler",17),5)..enc("Static",17))
+put(0x210000, enc("-------",17)..enc("Stench",17)..enc("Drizzle",17)..string.rep(enc("Filler",17),5)..enc("Static",17)..string.rep(enc("Filler",17),21)..enc("Lightning Rod",17)..string.rep(enc("Filler",17),8)..enc("Chlorophyll",17))
+-- decoy: short vanilla-style uppercase ability table (stride 13) earlier in the ROM
+put(0x0A0000, enc("-------",13)..enc("STENCH",13)..enc("DRIZZLE",13)..enc("SPEED BOOST",13))
+-- decoy: short vanilla-style item table
+put(0x0B0000, string.rep("\0",44)..enc("MASTER BALL",14)..string.rep("\0",30)..enc("ULTRA BALL",14)..string.rep("\0",30))
 -- items stride 44
 local function item(n) return enc(n,14)..string.rep("\0",30) end
 put(0x220000, item("????????")..item("Master Ball")..item("Ultra Ball")..string.rep(item("Junk"),20)..item("Oran Berry"))

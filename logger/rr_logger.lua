@@ -231,7 +231,7 @@ local function setupOutDir()
       pcall(os.execute, 'mkdir "' .. d:gsub("/", "\\"):gsub("\\$", "") .. '"')
     end
     if canWrite(d) then return d end
-    console:log("[rr] Khong ghi duoc vao " .. d .. " -> dung thu muc cua script")
+    console:log("[rr] Cannot write to " .. d .. " -> using the script folder")
   end
   return scriptDir()
 end
@@ -306,11 +306,61 @@ local function verifyBaseStats(base)
   return rr(ROM + base + 28, 8) == BS_NEEDLE and rr(ROM + base + 56, 8) == BS_NEEDLE2
 end
 
+-- Valid-name check: every byte before the 0xFF terminator must be a known glyph,
+-- and the name must contain at least one non-space character.
+local function validName(raw)
+  if not raw then return nil end
+  local out, nonSpace = {}, false
+  for i = 1, #raw do
+    local b = raw:byte(i)
+    if b == 0xFF then break end
+    local c = CHARS[b]
+    if not c then return nil end
+    if b ~= 0x00 then nonSpace = true end
+    out[#out + 1] = c
+  end
+  if not nonSpace then return nil end
+  return table.concat(out)
+end
+
+local function specByKey(key)
+  for _, s in ipairs(SPECS) do if s.key == key then return s end end
+end
+
+-- How long is the table really? Walk entries 1..maxId and return the highest
+-- index with a valid name, stopping after 16 invalid entries in a row.
+-- The vanilla FireRed tables (78 abilities, 355 moves, 375 items) are still in
+-- the ROM, so this is what lets us prefer the expanded CFRU/Radical Red table.
+local SCORE_MAX = { species = 2047, moves = 2047, abilities = 1023, items = 2047 }
+local function scoreTable(key, base, stride)
+  local spec = specByKey(key)
+  local len = spec.nameLen or stride
+  local maxId = SCORE_MAX[key]
+  local bytes = math.min((maxId + 1) * stride, T.romSize - base)
+  local blob = rr(ROM + base, bytes)
+  if not blob then return 0 end
+  local last, gap = 0, 0
+  for id = 1, maxId do
+    local off = id * stride
+    if off + len > #blob then break end
+    if validName(blob:sub(off + 1, off + len)) then last, gap = id, 0
+    else gap = gap + 1; if gap >= 16 then break end end
+  end
+  return last
+end
+
+T.candidates = { species = {}, moves = {}, abilities = {}, items = {} }
+local function addCandidate(key, base, stride, via)
+  local list = T.candidates[key]
+  for _, c in ipairs(list) do if c.base == base and c.stride == stride then return end end
+  list[#list + 1] = { base = base, stride = stride, via = via }
+end
+
 local function tryHints()
   for _, spec in ipairs(SPECS) do
     for _, base in ipairs(HINTS[spec.key] or {}) do
       local stride = verifyNameTable(spec, base)
-      if stride then T[spec.key] = { base = base, stride = stride, via = "hint" } break end
+      if stride then addCandidate(spec.key, base, stride, "hint") end
     end
   end
   for _, base in ipairs(HINTS.baseStats) do
@@ -318,36 +368,42 @@ local function tryHints()
   end
 end
 
-local function allFound()
-  return T.species and T.moves and T.abilities and T.items and T.baseStats
+-- After the full scan: pick, for every name table, the candidate with the most entries.
+local function pickTables()
+  for _, spec in ipairs(SPECS) do
+    local best
+    for _, c in ipairs(T.candidates[spec.key]) do
+      c.entries = scoreTable(spec.key, c.base, c.stride)
+      if not best or c.entries > best.entries then best = c end
+    end
+    T[spec.key] = best
+  end
 end
 
--- scans one chunk; returns true when the whole ROM was scanned
+-- scans one chunk; returns true when the whole ROM was scanned.
+-- Every matching table is collected (no early stop) so pickTables() can compare them.
 local function scanStep()
   if T.scanDone then return true end
   local size = T.romSize
   local from = T.scanFrom
-  if from >= size or allFound() then T.scanDone = true return true end
+  if from >= size then pickTables() T.scanDone = true return true end
   local len = math.min(CONFIG.SCAN_CHUNK + 64, size - from)
   local chunk = rr(ROM + from, len)
   if chunk then
     for _, spec in ipairs(SPECS) do
-      if not T[spec.key] then
-        for _, nd in ipairs(spec.needles) do
-          local init = 1
-          while not T[spec.key] do
-            local p = string.find(chunk, nd.e1, init, true)
-            if not p then break end
-            local pos = from + p - 1
-            for _, stride in ipairs(spec.strides) do
-              local base = pos - stride
-              if base >= 0 and verifyNameTable(spec, base) == stride then
-                T[spec.key] = { base = base, stride = stride, via = "scan" }
-                break
-              end
+      for _, nd in ipairs(spec.needles) do
+        local init = 1
+        while true do
+          local p = string.find(chunk, nd.e1, init, true)
+          if not p then break end
+          local pos = from + p - 1
+          for _, stride in ipairs(spec.strides) do
+            local base = pos - stride
+            if base >= 0 and verifyNameTable(spec, base) == stride then
+              addCandidate(spec.key, base, stride, "scan")
             end
-            init = p + 1
           end
+          init = p + 1
         end
       end
     end
@@ -363,21 +419,24 @@ local function scanStep()
     end
   end
   T.scanFrom = from + CONFIG.SCAN_CHUNK
-  if T.scanFrom >= size or allFound() then T.scanDone = true end
+  if T.scanFrom >= size then pickTables() T.scanDone = true end
   return T.scanDone
 end
 
+-- Returns the decoded name, or "#<id>" when the id is outside the table or the
+-- bytes there do not decode to a clean name. Returns nil for id 0 (none).
 local function tableName(key, id, maxId)
   if not id or id == 0 then return nil end
   local t = T[key]
-  if not t or id > maxId then return nil end
+  if not t then return nil end -- tables not found yet / at all: caller keeps the raw id
   local ck = key .. id
   if nameCache[ck] then return nameCache[ck] end
-  local len = SPECS[1].nameLen
-  for _, s in ipairs(SPECS) do if s.key == key then len = s.nameLen or t.stride end end
-  local raw = rr(ROM + t.base + id * t.stride, len)
-  if not raw then return nil end
-  local name = decodeText(raw)
+  local name
+  if id <= maxId and (not t.entries or id <= t.entries) then
+    local spec = specByKey(key)
+    name = validName(rr(ROM + t.base + id * t.stride, spec.nameLen or t.stride))
+  end
+  name = name or ("#" .. id)
   nameCache[ck] = name
   return name
 end
@@ -626,7 +685,8 @@ local function enemyBrief(list)
   local t = arr()
   for i, m in ipairs(list or {}) do
     t[i] = { slot = m.slot, species = m.species, name = m.species_name, level = m.level,
-             hp = m.hp, max_hp = m.max_hp, ability = m.ability_name, item = m.item_name }
+             hp = m.hp, max_hp = m.max_hp, ability = m.ability_name, ability_id = m.ability,
+             item = m.item_name, item_id = (m.item ~= 0) and m.item or nil }
   end
   return t
 end
@@ -702,6 +762,7 @@ local function diffParty(p, s)
       local via = "other"
       if pendingCatch and pendingCatch.species == m.species then via = "caught" end
       emit("party_add", { via = via, mon = monBrief(m), nature = m.nature, ability = m.ability_name,
+        ability_id = m.ability, item = m.item_name, item_id = (m.item ~= 0) and m.item or nil,
         location = locBrief(s) })
       if via == "caught" then
         pendingCatch = nil
@@ -731,7 +792,7 @@ local function diffParty(p, s)
       end
       if CONFIG.LOG_HELD_ITEMS and o.item ~= m.item then
         emit("held_item_change", { slot = m.slot, name = m.species_name, from = o.item_name or o.item,
-          to = m.item_name or m.item, in_battle = s.in_battle })
+          to = m.item_name or m.item, from_id = o.item, to_id = m.item, in_battle = s.in_battle })
       end
     end
   end
@@ -860,11 +921,18 @@ local function writeTablesInfo()
   local info = {}
   for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats" }) do
     local t = T[k]
-    info[k] = t and { rom_offset = hex(t.base), stride = t.stride, via = t.via } or "NOT FOUND"
+    info[k] = t and { rom_offset = hex(t.base), stride = t.stride, via = t.via, entries = t.entries } or "NOT FOUND"
+  end
+  info.candidates = {}
+  for k, list in pairs(T.candidates) do
+    local l = arr()
+    for i, c in ipairs(list) do l[i] = { rom_offset = hex(c.base), stride = c.stride, via = c.via, entries = c.entries } end
+    info.candidates[k] = l
   end
   info.rom_size = T.romSize
   info.sample = { species_1 = speciesName(1), species_4 = speciesName(4), move_1 = moveName(1),
-                  ability_1 = abilityName(1), item_1 = itemName(1) }
+                  ability_1 = abilityName(1), ability_200 = abilityName(200), move_500 = moveName(500),
+                  item_1 = itemName(1), item_500 = itemName(500) }
   local fh = io.open(outDir .. "rr_rom_tables.json", "w")
   if fh then fh:write(json(info)); fh:close() end
   return info
@@ -887,7 +955,7 @@ local function init()
   initialized = true
   emit("script_start", { out_dir = outDir, game_title = emu:getGameTitle(), game_code = emu:getGameCode(),
                          rom_size = T.romSize })
-  console:log("[rr] Ghi log vao: " .. outDir)
+  console:log("[rr] Writing logs to: " .. outDir)
 end
 
 local function poll()
@@ -963,6 +1031,7 @@ rrLoggerCallbacks = {
     if eventsFh then pcall(emit, "emulator_shutdown", nil); pcall(eventsFh.close, eventsFh); eventsFh = nil end
     initialized = false; prev = nil; T.scanDone = false; T.scanFrom = 0
     for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats" }) do T[k] = nil end
+    T.candidates = { species = {}, moves = {}, abilities = {}, items = {} }
     nameCache = {}
   end),
 }
