@@ -19,6 +19,6 @@ Repo cho một AI agent đóng vai "adviser" đi cùng t chơi Pokémon. Game hi
 
 ## Cài logger nhanh
 
-mGBA > Tools > Scripting > File > Load script > chọn `logger/rr_logger.lua`. Giữ cửa sổ Scripting mở. Log mặc định ghi vào `C:/Users/phamv/Documents/rr-log/` (xem `logger/README.md`).
+mGBA > Tools > Scripting > File > Load script > chọn `logger/rr_logger.lua`. Giữ cửa sổ Scripting mở. Log mặc định ghi vào `D:/pokemon-adviser/rr-log/` (xem `logger/README.md`).
 
 > Repo này không chứa và không bao giờ link tới file ROM.

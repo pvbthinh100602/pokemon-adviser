@@ -16,7 +16,7 @@
 -- CONFIG (edit me)
 ---------------------------------------------------------------------------
 local CONFIG = {
-  OUT_DIR             = "C:/Users/phamv/Documents/rr-log/", -- "" = folder of this script
+  OUT_DIR             = "D:/pokemon-adviser/rr-log/", -- "" = folder of this script
   POLL_FRAMES         = 30,    -- overworld: check state every N frames (60 frames = 1 s)
   POLL_FRAMES_BATTLE  = 10,    -- in battle: poll faster for a play-by-play
   SNAPSHOT_EVERY_POLLS= 4,     -- rewrite snapshot at most every N polls (and after events)

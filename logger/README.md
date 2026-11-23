@@ -6,7 +6,7 @@ Script Lua này chạy trong mGBA, cứ khoảng nửa giây đọc RAM game m�
 
 1. Cần **mGBA 0.10 trở lên** (Help > About để xem version).
 2. Copy `rr_logger.lua` vào đâu cũng được, ví dụ `C:\Users\phamv\Documents\rr-log\`.
-3. Mặc định log được ghi vào `C:/Users/phamv/Documents/rr-log/`. Muốn đổi thì mở file `.lua`, sửa dòng `OUT_DIR` ở đầu file (dùng dấu `/`). Để `""` thì log nằm chung thư mục với script.
+3. Mặc định log được ghi vào `D:/pokemon-adviser/rr-log/`. Muốn đổi thì mở file `.lua`, sửa dòng `OUT_DIR` ở đầu file (dùng dấu `/`). Để `""` thì log nằm chung thư mục với script.
    - Nếu thư mục chưa có, script tự tạo (có thể nháy lên cái cửa sổ cmd đen 1 giây, kệ nó). Tạo không được thì nó ghi vào thư mục chứa script.
 
 ## Mỗi lần chơi
