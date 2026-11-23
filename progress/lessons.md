@@ -40,3 +40,5 @@ Takeaways:
 - Pickup recycling Berry Juice worked again: it is a reliable sustain tool against Berry Juice holders.
 - Check the enemy's actual ability in the log; pre-fight doc data can differ (Varoom: Solid Rock).
 - Phanpy's Ice Shard is a strong closer versus Rock/Flying and Rock/Ground.
+
+- Data check: the trainer dump lists Varoom as Overcoat @ Air Balloon; the logger read ability id 100 as Solid Rock. Neither matches the 'Filter' used in the pre-fight plan. The dump is now the source for boss sets; treat logger ability names for enemies as a cross-check.
