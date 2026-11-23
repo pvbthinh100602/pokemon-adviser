@@ -1,0 +1,9 @@
+# Output của logger (bỏ dòng dưới nếu muốn commit log cho agent đọc)
+rr-log/
+*.jsonl
+rr_snapshot.json
+rr_rom_tables.json
+# Không bao giờ commit ROM / save
+*.gba
+*.sav
+*.ss[0-9]
