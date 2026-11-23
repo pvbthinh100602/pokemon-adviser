@@ -22,3 +22,21 @@ Falkner's team: Rufflet Lv12 (Hustle, Berry Juice, Aerial Ace / Rock Tomb / Rock
 
 ## General rules for this save
 - Bag items apparently cannot be used in trainer battles (auto difficulty). Healing must come from held items, Pickup, Roost-style moves, or switching.
+
+## Brock (Pewter Gym) - won on first attempt, Nov 23, 2026 (+1920 money, Boulder Badge)
+
+Team: Sprigatito Lv15, Numel Lv13 (Lv14 mid-fight), Phanpy Lv12 (Lv13 after). No bag items used.
+
+Timeline:
+- Sprigatito vs Geodude-Alola: Razor Leaf 23 (37 -> 14), took Bulldoze 5, second hit 14 KO. Sturdy never mattered because the first hit did not start from a OHKO; Custap was not seen triggering.
+- Numel vs Varoom: Varoom opened with Toxic. Ember 22, Numel took 18 + 13 (Bulldoze etc.), Numel KO'd Varoom, then Toxic finished Numel. Varoom's ability read as Solid Rock (not Filter as our pre-fight notes said).
+- Sprigatito vs Onix: 41 damage left Onix at 1 (Sturdy), Berry Juice to 21, Onix's Rock Tomb + Bulldoze took Sprigatito to 9 and dropped her Speed; Razor Leaf finished Onix.
+- Archen then outsped the slowed Sprigatito and KO'd her with Pluck.
+- Phanpy vs Archen: Ice Shard 16 / 15 / 16 / 11. Archen drank Berry Juice, Pickup grabbed it, Phanpy healed 20 and won at 29/50.
+
+Takeaways:
+- Rock Tomb and Bulldoze speed drops erase speed advantages. After eating one, assume the next enemy outspeeds; switch to priority (Ice Shard, Quick Attack) or a fresh mon.
+- Toxic is a clock. A poisoned mon should hit hard immediately and expect to die; don't plan long setups on it.
+- Pickup recycling Berry Juice worked again: it is a reliable sustain tool against Berry Juice holders.
+- Check the enemy's actual ability in the log; pre-fight doc data can differ (Varoom: Solid Rock).
+- Phanpy's Ice Shard is a strong closer versus Rock/Flying and Rock/Ground.
