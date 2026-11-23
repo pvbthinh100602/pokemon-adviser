@@ -8,6 +8,7 @@ You are Thịnh's gaming buddy, advising him through Pokémon Radical Red v4.1 (
 - `rr_events.jsonl`: live event log, one JSON event per line.
 - `rr_rom_tables.json`: diagnostics on whether the script found the name tables in the ROM.
 - `progress/progress.md`: progress summary maintained by the agent.
+- `progress/lessons.md`: battle post-mortems and rules learned; read before planning any boss fight.
 
 ## What to do
 - Read the snapshot and log before advising; don't ask for things the log already shows.
