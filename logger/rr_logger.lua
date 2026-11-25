@@ -71,6 +71,12 @@ local RAID_MAPSEC_COUNT = 0xC4 - MAPSEC_DYNAMIC
 local HINT_RAID_TABLE = 0x1134C34          -- gRaidsByMapSection (verified RR 4.1)
 local HINT_RAID_STARS_BY_BADGES = 0x1147640
 local HINT_RAID_LEVEL_RANGES = 0x1147654    -- includes a {0,0} slot for 0 stars
+local HINT_RAID_PARTNERS = 0x1134178       -- gRaidPartners (verified RR 4.1)
+local HINT_RAID_NUM_PARTNERS = 0x1134176  -- u8 gNumRaidPartners (= 8)
+local RAID_PARTNER_SIZE = 60
+local RAID_SPREAD_SIZE = 28
+local A_RAID_INTRO_PTR = 0x0203E038       -- sRaidBattleIntroPtr while the partner screen is open
+local RAID_INTRO_MAX_PARTNERS = 3
 local RAID_ABILITY = {[0]="hidden",[1]="ability_1",[2]="ability_2",[3]="random_1_2",[4]="random_all"}
 local RAID_DROP_RATES = {100,80,80,50,50,30,30,25,25,5,4,1}
 
@@ -636,6 +642,107 @@ local function loadRaidTables()
   return true
 end
 
+local function frontierAbility(sid, slot)
+  local bs = baseStats(sid)
+  if not bs then return nil end
+  local id
+  if slot == 0 then id = bs.hiddenAbility ~= 0 and bs.hiddenAbility or bs.ability1
+  elseif slot == 1 then id = bs.ability1
+  elseif slot == 2 then id = (bs.ability2 ~= 0) and bs.ability2 or bs.ability1
+  end
+  if not id or id == 0 then return nil end
+  return abilityName(id), id
+end
+
+local function parseSpread(off)
+  local blob = rr(ROM + off, RAID_SPREAD_SIZE)
+  if not blob then return nil end
+  local sid = u16(blob, 0)
+  if not sid or sid == 0 or sid > 1375 then return nil end
+  local nature, flags = u8(blob, 2), u8(blob, 25)
+  local item = u16(blob, 14)
+  local slot = (flags >> 4) & 3
+  local moves = arr()
+  for i = 0, 3 do
+    local mid = u16(blob, 16 + i * 2)
+    if mid and mid ~= 0 then
+      moves[#moves + 1] = { id = mid, name = moveName(mid) }
+    end
+  end
+  local aname, aid = frontierAbility(sid, slot)
+  return {
+    species_id = sid,
+    species = qualifySpecies(sid) or speciesName(sid),
+    types = speciesTypes(sid),
+    nature = NATURES[nature],
+    item_id = (item ~= 0) and item or nil,
+    item = (item ~= 0) and itemName(item) or nil,
+    ability = aname,
+    ability_id = aid,
+    ability_slot = RAID_ABILITY[slot] or tostring(slot),
+    moves = moves,
+  }
+end
+
+local function loadRaidPartners()
+  local n = r8(ROM + HINT_RAID_NUM_PARTNERS)
+  local namePtr = r32(ROM + HINT_RAID_PARTNERS + 12)
+  local nameOff = isRom(namePtr) and (namePtr - ROM) or nil
+  local firstName = nameOff and decodeText(rr(ROM + nameOff, 16) or "") or nil
+  -- Mahina's 1-star lead is Foongus (species 590 in this ROM, but check by name)
+  local slot1 = HINT_RAID_PARTNERS + 16 + 1 * 4
+  local sp = r32(ROM + slot1)
+  local soff = isRom(sp) and (sp - ROM) or nil
+  local lead = soff and r16(ROM + soff) or nil
+  local leadName = lead and (speciesName(lead) or "") or ""
+  if n ~= 8 or firstName ~= "Mahina" or leadName ~= "Foongus" then
+    T.raidPartners = { found = false, reason = "signature mismatch",
+      count = n, first = firstName, lead = leadName }
+    return false
+  end
+  local list = arr()
+  for i = 0, n - 1 do
+    local off = HINT_RAID_PARTNERS + i * RAID_PARTNER_SIZE
+    local tclass = r8(ROM + off + 2)
+    local gender = r8(ROM + off + 4)
+    local np = r32(ROM + off + 12)
+    local noff = isRom(np) and (np - ROM) or nil
+    local pname = noff and decodeText(rr(ROM + noff, 16) or "") or ("partner_" .. i)
+    local stars = {}
+    for star = 1, RAID_STAR_COUNT - 1 do
+      local p = r32(ROM + off + 16 + star * 4)
+      local sz = r16(ROM + off + 44 + star * 2)
+      local roff = isRom(p) and (p - ROM) or nil
+      if roff and sz and sz > 0 and sz <= 6 then
+        local team = arr()
+        for k = 0, sz - 1 do
+          local rec = parseSpread(roff + k * RAID_SPREAD_SIZE)
+          if rec then team[#team + 1] = rec end
+        end
+        if #team > 0 then stars[tostring(star)] = team end
+      end
+    end
+    list[#list + 1] = {
+      id = i, name = pname, trainer_class = tclass,
+      gender = (gender == 1) and "female" or "male", stars = stars,
+    }
+  end
+  T.raidPartners = {
+    found = true, via = "hint+mahina-foongus", rom_offset = hex(HINT_RAID_PARTNERS),
+    count = n, list = list,
+  }
+  T.raidPartnersById = {}
+  for _, p in ipairs(list) do T.raidPartnersById[p.id] = p end
+  return true
+end
+
+local function partnerTeamForStar(id, stars)
+  local p = T.raidPartnersById and T.raidPartnersById[id]
+  if not p then return nil, nil end
+  local team = p.stars and p.stars[tostring(stars or 1)]
+  return p, team
+end
+
 local function denPool(mapsec)
   return T.raidsByMapsec and T.raidsByMapsec[mapsec] or nil
 end
@@ -1067,6 +1174,58 @@ local function raidEventPayload(s)
   return ev
 end
 
+-- While the raid intro / partner-select screen is open, sRaidBattleIntroPtr
+-- (0x0203E038) points at a heap RaidBattleIntro. During battle the same
+-- address is gNewBS, so require species + stars to match the current den.
+local function readRaidIntro(s)
+  if s.in_battle then return nil end
+  local p = r32(A_RAID_INTRO_PTR)
+  if not isEwram(p) or p == A_RAID_INTRO_PTR then return nil end
+  -- Aligned layout (GCC pads after partners[3]): species at +40, rank at +42.
+  -- Packed fallback: species at +38, rank at +40.
+  local layouts = { { species = 40, rank = 42, selected = 43, partners = 4 },
+                    { species = 38, rank = 40, selected = 41, partners = 4 } }
+  local lay
+  for _, L in ipairs(layouts) do
+    local sid, rank = r16(p + L.species), r8(p + L.rank)
+    if sid and sid == (s.raid_species or 0) and sid ~= 0
+       and rank and rank == (s.raid_stars or 0) and rank ~= 0 then
+      lay = L; break
+    end
+  end
+  if not lay then return nil end
+  local offered = arr()
+  for i = 0, RAID_INTRO_MAX_PARTNERS - 1 do
+    local base = p + lay.partners + i * 10 -- struct Partner: u16 id, u16 gfx, u16 team[3]
+    local id, gfx = r16(base), r16(base + 2)
+    if id and gfx and gfx ~= 0 then
+      local meta, team = partnerTeamForStar(id, s.raid_stars)
+      -- Screen only stores species ids; fall back to them if the ROM table missed a spread.
+      if not team then
+        team = arr()
+        for j = 0, 2 do
+          local sid = r16(base + 4 + j * 2)
+          if sid and sid ~= 0 then
+            team[#team + 1] = { species_id = sid, species = qualifySpecies(sid) or speciesName(sid),
+              types = speciesTypes(sid) }
+          end
+        end
+      end
+      local entry = {
+        slot = i + 1, id = id, name = meta and meta.name or ("#" .. id),
+        gender = meta and meta.gender, trainer_class = meta and meta.trainer_class,
+        team = team or arr(),
+        -- Partners are built at a random level in the current star range.
+        level_range = T.raids and T.raids.level_ranges_by_stars and T.raids.level_ranges_by_stars[tostring(s.raid_stars)] or nil,
+        level = s.raid_level,
+      }
+      offered[#offered + 1] = entry
+    end
+  end
+  if #offered == 0 then return nil end
+  return { selected = r8(p + lay.selected), partners = offered }
+end
+
 local function maybeEmitRaidDen(p, s, reason)
   local cur = s.raid_species or 0
   if cur == 0 and s.raid_stars == 0 and s.raid_level == 0 then return end
@@ -1077,6 +1236,29 @@ local function maybeEmitRaidDen(p, s, reason)
   local ev = raidEventPayload(s)
   ev.reason = reason or "den_updated"
   emit("raid_den", ev)
+end
+
+local function partnerKey(intro)
+  if not intro or not intro.partners then return "" end
+  local t = {}
+  for i, p in ipairs(intro.partners) do t[i] = tostring(p.id or 0) end
+  return table.concat(t, ",")
+end
+
+local lastPartnerKey = nil
+local function maybeEmitRaidPartners(s)
+  local intro = s.raid_intro
+  local key = partnerKey(intro)
+  if key == "" or key == lastPartnerKey then return end
+  if not (T.raidPartners and T.raidPartners.found) then return end
+  lastPartnerKey = key
+  emit("raid_partners", {
+    stars = s.raid_stars, level = s.raid_level,
+    raid_species = (s.raid_species ~= 0) and (qualifySpecies(s.raid_species) or speciesName(s.raid_species)) or nil,
+    selected = intro.selected,
+    partners = intro.partners,
+    location = locBrief(s),
+  })
 end
 
 local function onBattleStart(s)
@@ -1126,6 +1308,7 @@ local function diff(p, s)
     emit("map_change", { from = locBrief(p), to = locBrief(s) })
   end
   maybeEmitRaidDen(p, s, "den_updated")
+  maybeEmitRaidPartners(s)
   -- battle transitions
   if s.in_battle and not p.in_battle then onBattleStart(s) end
   if s.in_battle and s.outcome and s.outcome ~= 0 then
@@ -1170,7 +1353,7 @@ local function writeSnapshot(s, force)
     party[i] = c
   end
   local snap = {
-    updated = now(), frame = frameNo, script = "rr_logger.lua v2",
+    updated = now(), frame = frameNo, script = "rr_logger.lua v3",
     game = { title = emu:getGameTitle(), code = emu:getGameCode() },
     ready = s.ready, player = s.player_name, gender = s.player_gender, trainer_id = s.trainer_id,
     play_time = s.play_time, money = s.money,
@@ -1193,6 +1376,10 @@ local function writeSnapshot(s, force)
     local raid = raidEventPayload(s)
     -- Always include current RAM + the pool for this map, even if the den
     -- hasn't been opened yet (so the adviser can see what it can contain).
+    if s.raid_intro then
+      raid.partners = s.raid_intro.partners
+      raid.selected_partner = s.raid_intro.selected
+    end
     snap.raid = raid
   end
   local text = json(snap)
@@ -1223,6 +1410,9 @@ local function writeTablesInfo()
   if T.raids then
     info.raids = T.raids
   end
+  if T.raidPartners then
+    info.raid_partners = T.raidPartners
+  end
   local fh = io.open(outDir .. "rr_rom_tables.json", "w")
   if fh then fh:write(json(info)); fh:close() end
   return info
@@ -1250,6 +1440,7 @@ end
 
 local function poll()
   local s = readState()
+  if s and s.ready then s.raid_intro = readRaidIntro(s) end
   if not s.ready then
     if prev then emit("game_unloaded", { reason = "party empty (title screen / reset?)" }) end
     prev = nil
@@ -1259,6 +1450,7 @@ local function poll()
     emit("game_loaded", { player = s.player_name, play_time = s.play_time, badges = s.badges,
       money = s.money, location = locBrief(s), party = partyBrief(s.party), data_mode = cryptMode })
     maybeEmitRaidDen(nil, s, "script_loaded")
+    maybeEmitRaidPartners(s)
     if s.in_battle then onBattleStart(s) end
   elseif s.play_seconds and prev.play_seconds and
          (s.play_seconds < prev.play_seconds or s.play_seconds - prev.play_seconds > 120) then
@@ -1288,6 +1480,7 @@ local function onFrame()
       nameCache = {}
       pcall(buildSpeciesFirstIds)
       pcall(loadRaidTables)
+      pcall(loadRaidPartners)
       local ok2, info = pcall(writeTablesInfo)
       if ok2 then emit("rom_tables", { found = info and info.raids and info.raids.found,
         den_count = info and info.raids and info.raids.den_count,
@@ -1327,7 +1520,8 @@ rrLoggerCallbacks = {
   callbacks:add("shutdown", function()
     if eventsFh then pcall(emit, "emulator_shutdown", nil); pcall(eventsFh.close, eventsFh); eventsFh = nil end
     initialized = false; prev = nil; T.scanDone = false; T.scanFrom = 0
-    for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats", "raids", "raidsByMapsec", "speciesFirstId" }) do T[k] = nil end
+    lastPartnerKey = nil
+    for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats", "raids", "raidsByMapsec", "speciesFirstId", "raidPartners", "raidPartnersById" }) do T[k] = nil end
     T.candidates = { species = {}, moves = {}, abilities = {}, items = {} }
     nameCache = {}
   end),

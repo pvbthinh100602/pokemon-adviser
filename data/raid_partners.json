@@ -1,0 +1,4310 @@
+{
+  "source": "Decoded from a Radical Red v4.1 CFRU ROM (gRaidPartners at 0x1134178, gNumRaidPartners = 8 at 0x1134176). The ROM itself is not in this repository.",
+  "rom_offsets": {
+    "gRaidPartners": "0x1134178",
+    "gNumRaidPartners": "0x1134176",
+    "sRaidBattleIntroPtr_ram": "0x0203E038"
+  },
+  "struct_sizes": {
+    "MultiRaidTrainer": 60,
+    "BattleTowerSpread": 28
+  },
+  "notes": [
+    "The raid intro screen shows 3 partners chosen at random from those who have a spread for the current star level. Live candidates live in the RaidBattleIntro struct pointed to by 0x0203E038 while that screen is open.",
+    "Partner Pokemon are built at GetRandomRaidLevel() (the star's level range; 20-25 for 1-star in this ROM).",
+    "Ability slot 0 = hidden, 1 = first ability, 2 = second ability (same encoding as raid dens)."
+  ],
+  "count": 8,
+  "partners": [
+    {
+      "id": 0,
+      "name": "Mahina",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 32,
+      "back_sprite": 5,
+      "stars": {
+        "1": [
+          {
+            "species_id": 643,
+            "species": "Foongus",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 422,
+                "name": "Venoshock"
+              },
+              {
+                "id": 427,
+                "name": "Clear Smog"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 663,
+            "species": "Axew",
+            "types": [
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 676,
+            "item": "Expert Belt",
+            "ability": "Mold Breaker",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 337,
+                "name": "Dragon Claw"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 424,
+                "name": "Poison Jab"
+              },
+              {
+                "id": 400,
+                "name": "X-Scissor"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 95,
+            "species": "Onix",
+            "types": [
+              "Rock",
+              "Ground"
+            ],
+            "nature": "Careful",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Sturdy",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              },
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 20,
+                "name": "Bind"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "species_id": 643,
+            "species": "Foongus",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 422,
+                "name": "Venoshock"
+              },
+              {
+                "id": 427,
+                "name": "Clear Smog"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 663,
+            "species": "Axew",
+            "types": [
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 676,
+            "item": "Expert Belt",
+            "ability": "Mold Breaker",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 337,
+                "name": "Dragon Claw"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 424,
+                "name": "Poison Jab"
+              },
+              {
+                "id": 400,
+                "name": "X-Scissor"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 95,
+            "species": "Onix",
+            "types": [
+              "Rock",
+              "Ground"
+            ],
+            "nature": "Careful",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Sturdy",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              },
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 20,
+                "name": "Bind"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "species_id": 643,
+            "species": "Foongus",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 422,
+                "name": "Venoshock"
+              },
+              {
+                "id": 427,
+                "name": "Clear Smog"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 663,
+            "species": "Axew",
+            "types": [
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 676,
+            "item": "Expert Belt",
+            "ability": "Mold Breaker",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 337,
+                "name": "Dragon Claw"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 424,
+                "name": "Poison Jab"
+              },
+              {
+                "id": 400,
+                "name": "X-Scissor"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 95,
+            "species": "Onix",
+            "types": [
+              "Rock",
+              "Ground"
+            ],
+            "nature": "Careful",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Sturdy",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              },
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 20,
+                "name": "Bind"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "species_id": 130,
+            "species": "Gyarados",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "nature": "Careful",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 390,
+                "name": "Power Whip"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 690,
+            "species": "Volcarona",
+            "types": [
+              "Bug",
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flame Body",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 362,
+                "name": "Bug Buzz"
+              },
+              {
+                "id": 426,
+                "name": "Fiery Dance"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire"
+            ]
+          },
+          {
+            "species_id": 3,
+            "species": "Venusaur",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Bold",
+            "item_id": 533,
+            "item": "Venusaurite",
+            "ability": "Chlorophyll",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 629,
+                "name": "Grass Pledge"
+              },
+              {
+                "id": 188,
+                "name": "Sludge Bomb"
+              },
+              {
+                "id": 311,
+                "name": "Weather Ball"
+              },
+              {
+                "id": 73,
+                "name": "Leech Seed"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "5": [
+          {
+            "species_id": 130,
+            "species": "Gyarados",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "nature": "Careful",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 390,
+                "name": "Power Whip"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 690,
+            "species": "Volcarona",
+            "types": [
+              "Bug",
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flame Body",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 362,
+                "name": "Bug Buzz"
+              },
+              {
+                "id": 426,
+                "name": "Fiery Dance"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire"
+            ]
+          },
+          {
+            "species_id": 3,
+            "species": "Venusaur",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Bold",
+            "item_id": 533,
+            "item": "Venusaurite",
+            "ability": "Chlorophyll",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 629,
+                "name": "Grass Pledge"
+              },
+              {
+                "id": 188,
+                "name": "Sludge Bomb"
+              },
+              {
+                "id": 311,
+                "name": "Weather Ball"
+              },
+              {
+                "id": 73,
+                "name": "Leech Seed"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "6": [
+          {
+            "species_id": 130,
+            "species": "Gyarados",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "nature": "Careful",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 382,
+                "name": "Iron Head"
+              },
+              {
+                "id": 390,
+                "name": "Power Whip"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 690,
+            "species": "Volcarona",
+            "types": [
+              "Bug",
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flame Body",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 362,
+                "name": "Bug Buzz"
+              },
+              {
+                "id": 426,
+                "name": "Fiery Dance"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire"
+            ]
+          },
+          {
+            "species_id": 3,
+            "species": "Venusaur",
+            "types": [
+              "Grass",
+              "Poison"
+            ],
+            "nature": "Bold",
+            "item_id": 533,
+            "item": "Venusaurite",
+            "ability": "Chlorophyll",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 629,
+                "name": "Grass Pledge"
+              },
+              {
+                "id": 188,
+                "name": "Sludge Bomb"
+              },
+              {
+                "id": 311,
+                "name": "Weather Ball"
+              },
+              {
+                "id": 73,
+                "name": "Leech Seed"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "name": "Xan",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 30,
+      "back_sprite": 4,
+      "stars": {
+        "1": [
+          {
+            "species_id": 216,
+            "species": "Teddiursa",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Quick Feet",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 34,
+                "name": "Body Slam"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 232,
+                "name": "Metal Claw"
+              },
+              {
+                "id": 281,
+                "name": "Yawn"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 4,
+            "species": "Charmander",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Adamant",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blaze",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 587,
+                "name": "Fire Lash"
+              },
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 246,
+                "name": "AncientPower"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Fire Lash",
+              "move:Flame Burst"
+            ]
+          },
+          {
+            "species_id": 125,
+            "species": "Electabuzz",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Adamant",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Iron Fist",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 9,
+                "name": "ThunderPunch"
+              },
+              {
+                "id": 86,
+                "name": "Thunder Wave"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "species_id": 216,
+            "species": "Teddiursa",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Quick Feet",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 34,
+                "name": "Body Slam"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 232,
+                "name": "Metal Claw"
+              },
+              {
+                "id": 281,
+                "name": "Yawn"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 4,
+            "species": "Charmander",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Adamant",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blaze",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 587,
+                "name": "Fire Lash"
+              },
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 246,
+                "name": "AncientPower"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Fire Lash",
+              "move:Flame Burst"
+            ]
+          },
+          {
+            "species_id": 125,
+            "species": "Electabuzz",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Adamant",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Iron Fist",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 9,
+                "name": "ThunderPunch"
+              },
+              {
+                "id": 86,
+                "name": "Thunder Wave"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "species_id": 1030,
+            "species": "Persian",
+            "types": [
+              "Dark"
+            ],
+            "nature": "Modest",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Feline Prowess",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 367,
+                "name": "Dark Pulse"
+              },
+              {
+                "id": 389,
+                "name": "Power Gem"
+              },
+              {
+                "id": 129,
+                "name": "Swift"
+              },
+              {
+                "id": 196,
+                "name": "Icy Wind"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 985,
+            "species": "Golisopod",
+            "types": [
+              "Bug",
+              "Water"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Emergency Exit",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 588,
+                "name": "FirstImpress"
+              },
+              {
+                "id": 596,
+                "name": "Liquidation"
+              },
+              {
+                "id": 141,
+                "name": "Leech Life"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 501,
+            "species": "Lucario",
+            "types": [
+              "Fighting",
+              "Steel"
+            ],
+            "nature": "Modest",
+            "item_id": 683,
+            "item": "Focus Sash",
+            "ability": "Justified",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              },
+              {
+                "id": 399,
+                "name": "Vacuum Wave"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Aura Sphere",
+              "move:Close Combat"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "species_id": 217,
+            "species": "Ursaring",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 680,
+            "item": "Toxic Orb",
+            "ability": "Quick Feet",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 263,
+                "name": "Facade"
+              },
+              {
+                "id": 458,
+                "name": "Sucker Punch"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 519,
+            "species": "Electivire",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Adamant",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Iron Fist",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 663,
+                "name": "Plasma Fists"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 183,
+                "name": "Mach Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 501,
+            "species": "Lucario",
+            "types": [
+              "Fighting",
+              "Steel"
+            ],
+            "nature": "Modest",
+            "item_id": 575,
+            "item": "Lucarionite",
+            "ability": "Justified",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              },
+              {
+                "id": 399,
+                "name": "Vacuum Wave"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "species_id": 217,
+            "species": "Ursaring",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 680,
+            "item": "Toxic Orb",
+            "ability": "Quick Feet",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 263,
+                "name": "Facade"
+              },
+              {
+                "id": 458,
+                "name": "Sucker Punch"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 519,
+            "species": "Electivire",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Adamant",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Iron Fist",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 663,
+                "name": "Plasma Fists"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 183,
+                "name": "Mach Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 501,
+            "species": "Lucario",
+            "types": [
+              "Fighting",
+              "Steel"
+            ],
+            "nature": "Modest",
+            "item_id": 575,
+            "item": "Lucarionite",
+            "ability": "Justified",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              },
+              {
+                "id": 399,
+                "name": "Vacuum Wave"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 217,
+            "species": "Ursaring",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 680,
+            "item": "Toxic Orb",
+            "ability": "Quick Feet",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 263,
+                "name": "Facade"
+              },
+              {
+                "id": 458,
+                "name": "Sucker Punch"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 519,
+            "species": "Electivire",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Adamant",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Iron Fist",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 663,
+                "name": "Plasma Fists"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 183,
+                "name": "Mach Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Close Combat"
+            ]
+          },
+          {
+            "species_id": 501,
+            "species": "Lucario",
+            "types": [
+              "Fighting",
+              "Steel"
+            ],
+            "nature": "Modest",
+            "item_id": 575,
+            "item": "Lucarionite",
+            "ability": "Justified",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              },
+              {
+                "id": 399,
+                "name": "Vacuum Wave"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Aura Sphere"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Alford",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 32,
+      "back_sprite": 5,
+      "stars": {
+        "1": [
+          {
+            "species_id": 774,
+            "species": "Vivillon",
+            "types": [
+              "Bug",
+              "Flying"
+            ],
+            "nature": "Timid",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 570,
+                "name": "Infestation"
+              },
+              {
+                "id": 405,
+                "name": "Electroweb"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 35,
+            "species": "Clefairy",
+            "types": [
+              "Fairy"
+            ],
+            "nature": "Calm",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 464,
+                "name": "Moonblast"
+              },
+              {
+                "id": 270,
+                "name": "Helping Hand"
+              },
+              {
+                "id": 266,
+                "name": "Follow Me"
+              },
+              {
+                "id": 707,
+                "name": "Life Dew"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 584,
+            "species": "Audino",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 466,
+                "name": "Dazzle Gleam"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 448,
+                "name": "Heal Pulse"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "species_id": 774,
+            "species": "Vivillon",
+            "types": [
+              "Bug",
+              "Flying"
+            ],
+            "nature": "Timid",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 570,
+                "name": "Infestation"
+              },
+              {
+                "id": 405,
+                "name": "Electroweb"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 35,
+            "species": "Clefairy",
+            "types": [
+              "Fairy"
+            ],
+            "nature": "Calm",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 464,
+                "name": "Moonblast"
+              },
+              {
+                "id": 270,
+                "name": "Helping Hand"
+              },
+              {
+                "id": 266,
+                "name": "Follow Me"
+              },
+              {
+                "id": 707,
+                "name": "Life Dew"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 584,
+            "species": "Audino",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 466,
+                "name": "Dazzle Gleam"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 448,
+                "name": "Heal Pulse"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "species_id": 774,
+            "species": "Vivillon",
+            "types": [
+              "Bug",
+              "Flying"
+            ],
+            "nature": "Timid",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 570,
+                "name": "Infestation"
+              },
+              {
+                "id": 405,
+                "name": "Electroweb"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 35,
+            "species": "Clefairy",
+            "types": [
+              "Fairy"
+            ],
+            "nature": "Calm",
+            "item_id": 700,
+            "item": "Eviolite",
+            "ability": "Friend Guard",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 464,
+                "name": "Moonblast"
+              },
+              {
+                "id": 270,
+                "name": "Helping Hand"
+              },
+              {
+                "id": 266,
+                "name": "Follow Me"
+              },
+              {
+                "id": 707,
+                "name": "Life Dew"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 584,
+            "species": "Audino",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Calm",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Regenerator",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 466,
+                "name": "Dazzle Gleam"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 448,
+                "name": "Heal Pulse"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "species_id": 136,
+            "species": "Flareon",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flash Fire",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 221,
+                "name": "Sacred Fire"
+              },
+              {
+                "id": 423,
+                "name": "Wild Charge"
+              },
+              {
+                "id": 34,
+                "name": "Body Slam"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Sacred Fire",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 135,
+            "species": "Jolteon",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Modest",
+            "item_id": 683,
+            "item": "Focus Sash",
+            "ability": "Volt Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 247,
+                "name": "Shadow Ball"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 134,
+            "species": "Vaporeon",
+            "types": [
+              "Water"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Water Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 459,
+                "name": "Scald"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "5": [
+          {
+            "species_id": 136,
+            "species": "Flareon",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flash Fire",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 221,
+                "name": "Sacred Fire"
+              },
+              {
+                "id": 423,
+                "name": "Wild Charge"
+              },
+              {
+                "id": 34,
+                "name": "Body Slam"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Sacred Fire",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 135,
+            "species": "Jolteon",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Modest",
+            "item_id": 683,
+            "item": "Focus Sash",
+            "ability": "Volt Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 247,
+                "name": "Shadow Ball"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 134,
+            "species": "Vaporeon",
+            "types": [
+              "Water"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Water Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 459,
+                "name": "Scald"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "6": [
+          {
+            "species_id": 136,
+            "species": "Flareon",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Flash Fire",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 221,
+                "name": "Sacred Fire"
+              },
+              {
+                "id": 423,
+                "name": "Wild Charge"
+              },
+              {
+                "id": 34,
+                "name": "Body Slam"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Sacred Fire",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 135,
+            "species": "Jolteon",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Modest",
+            "item_id": 683,
+            "item": "Focus Sash",
+            "ability": "Volt Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 247,
+                "name": "Shadow Ball"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 134,
+            "species": "Vaporeon",
+            "types": [
+              "Water"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Water Absorb",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 459,
+                "name": "Scald"
+              },
+              {
+                "id": 273,
+                "name": "Wish"
+              },
+              {
+                "id": 182,
+                "name": "Protect"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Marlon",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 30,
+      "back_sprite": 4,
+      "stars": {
+        "4": [
+          {
+            "species_id": 68,
+            "species": "Machamp",
+            "types": [
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Guts",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              },
+              {
+                "id": 638,
+                "name": "Wide Guard"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 606,
+            "species": "Krookodile",
+            "types": [
+              "Ground",
+              "Dark"
+            ],
+            "nature": "Adamant",
+            "item_id": 711,
+            "item": "Assault Vest",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 585,
+                "name": "Dark Lariat"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 433,
+                "name": "Thunder Fang"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          },
+          {
+            "species_id": 145,
+            "species": "Zapdos",
+            "types": [
+              "Electric",
+              "Flying"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Static",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 257,
+                "name": "Heat Wave"
+              },
+              {
+                "id": 388,
+                "name": "Ominous Wind"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Heat Wave"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "species_id": 68,
+            "species": "Machamp",
+            "types": [
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Guts",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              },
+              {
+                "id": 638,
+                "name": "Wide Guard"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 606,
+            "species": "Krookodile",
+            "types": [
+              "Ground",
+              "Dark"
+            ],
+            "nature": "Adamant",
+            "item_id": 711,
+            "item": "Assault Vest",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 585,
+                "name": "Dark Lariat"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 433,
+                "name": "Thunder Fang"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          },
+          {
+            "species_id": 145,
+            "species": "Zapdos",
+            "types": [
+              "Electric",
+              "Flying"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Static",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 257,
+                "name": "Heat Wave"
+              },
+              {
+                "id": 388,
+                "name": "Ominous Wind"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Heat Wave"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 68,
+            "species": "Machamp",
+            "types": [
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 142,
+            "item": "Sitrus Berry",
+            "ability": "Guts",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 363,
+                "name": "Bullet Punch"
+              },
+              {
+                "id": 638,
+                "name": "Wide Guard"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fighting",
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 606,
+            "species": "Krookodile",
+            "types": [
+              "Ground",
+              "Dark"
+            ],
+            "nature": "Adamant",
+            "item_id": 711,
+            "item": "Assault Vest",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 617,
+                "name": "Bad Tantrum"
+              },
+              {
+                "id": 585,
+                "name": "Dark Lariat"
+              },
+              {
+                "id": 358,
+                "name": "Aqua Tail"
+              },
+              {
+                "id": 433,
+                "name": "Thunder Fang"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Bad Tantrum"
+            ]
+          },
+          {
+            "species_id": 145,
+            "species": "Zapdos",
+            "types": [
+              "Electric",
+              "Flying"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Static",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 257,
+                "name": "Heat Wave"
+              },
+              {
+                "id": 388,
+                "name": "Ominous Wind"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Heat Wave"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Jax",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 14,
+      "back_sprite": 2,
+      "stars": {
+        "1": [
+          {
+            "species_id": 278,
+            "species": "Grovyle",
+            "types": [
+              "Grass"
+            ],
+            "nature": "Adamant",
+            "item_id": 205,
+            "item": "Miracle Seed",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 348,
+                "name": "Leaf Blade"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 332,
+                "name": "Aerial Ace"
+              },
+              {
+                "id": 98,
+                "name": "Quick Attack"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 326,
+            "species": "Corphish",
+            "types": [
+              "Water"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Adaptability",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 387,
+                "name": "Night Slash"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 352,
+                "name": "Water Pulse"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 348,
+            "species": "Lunatone",
+            "types": [
+              "Rock",
+              "Psychic"
+            ],
+            "nature": "Timid",
+            "item_id": 214,
+            "item": "TwistedSpoon",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 60,
+                "name": "Psybeam"
+              },
+              {
+                "id": 246,
+                "name": "AncientPower"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "2": [
+          {
+            "species_id": 278,
+            "species": "Grovyle",
+            "types": [
+              "Grass"
+            ],
+            "nature": "Adamant",
+            "item_id": 205,
+            "item": "Miracle Seed",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 348,
+                "name": "Leaf Blade"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 332,
+                "name": "Aerial Ace"
+              },
+              {
+                "id": 98,
+                "name": "Quick Attack"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 326,
+            "species": "Corphish",
+            "types": [
+              "Water"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Adaptability",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 387,
+                "name": "Night Slash"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              },
+              {
+                "id": 352,
+                "name": "Water Pulse"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 348,
+            "species": "Lunatone",
+            "types": [
+              "Rock",
+              "Psychic"
+            ],
+            "nature": "Timid",
+            "item_id": 214,
+            "item": "TwistedSpoon",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 60,
+                "name": "Psybeam"
+              },
+              {
+                "id": 246,
+                "name": "AncientPower"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              }
+            ],
+            "good_vs_steel": []
+          }
+        ],
+        "3": [
+          {
+            "species_id": 279,
+            "species": "Sceptile",
+            "types": [
+              "Grass",
+              "Dragon"
+            ],
+            "nature": "Timid",
+            "item_id": 205,
+            "item": "Miracle Seed",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 428,
+                "name": "Leaf Storm"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 372,
+            "species": "Exploud",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Modest",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Punk Rock",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          },
+          {
+            "species_id": 327,
+            "species": "Crawdaunt",
+            "types": [
+              "Water",
+              "Dark"
+            ],
+            "nature": "Jolly",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Adaptability",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 242,
+                "name": "Crunch"
+              },
+              {
+                "id": 596,
+                "name": "Liquidation"
+              },
+              {
+                "id": 276,
+                "name": "Superpower"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Superpower"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "species_id": 279,
+            "species": "Sceptile",
+            "types": [
+              "Grass",
+              "Dragon"
+            ],
+            "nature": "Timid",
+            "item_id": 554,
+            "item": "Sceptilite",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 372,
+            "species": "Exploud",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Modest",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Punk Rock",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          },
+          {
+            "species_id": 408,
+            "species": "Latios",
+            "types": [
+              "Dragon",
+              "Psychic"
+            ],
+            "nature": "Timid",
+            "item_id": 191,
+            "item": "Soul Dew",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 94,
+                "name": "Psychic"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "species_id": 279,
+            "species": "Sceptile",
+            "types": [
+              "Grass",
+              "Dragon"
+            ],
+            "nature": "Timid",
+            "item_id": 554,
+            "item": "Sceptilite",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 372,
+            "species": "Exploud",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Modest",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Punk Rock",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          },
+          {
+            "species_id": 408,
+            "species": "Latios",
+            "types": [
+              "Dragon",
+              "Psychic"
+            ],
+            "nature": "Timid",
+            "item_id": 191,
+            "item": "Soul Dew",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 94,
+                "name": "Psychic"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 279,
+            "species": "Sceptile",
+            "types": [
+              "Grass",
+              "Dragon"
+            ],
+            "nature": "Timid",
+            "item_id": 554,
+            "item": "Sceptilite",
+            "ability": "Overgrow",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 202,
+                "name": "Giga Drain"
+              },
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              },
+              {
+                "id": 92,
+                "name": "Toxic"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 372,
+            "species": "Exploud",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Modest",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Punk Rock",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 58,
+                "name": "Ice Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          },
+          {
+            "species_id": 408,
+            "species": "Latios",
+            "types": [
+              "Dragon",
+              "Psychic"
+            ],
+            "nature": "Timid",
+            "item_id": 191,
+            "item": "Soul Dew",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 94,
+                "name": "Psychic"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Gold",
+      "trainer_class": 0,
+      "gender": "male",
+      "ow_num": 412,
+      "back_sprite": 7,
+      "stars": {
+        "1": [
+          {
+            "species_id": 156,
+            "species": "Quilava",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Flash Fire",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 98,
+                "name": "Quick Attack"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              },
+              {
+                "id": 306,
+                "name": "Crush Claw"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flame Burst",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 192,
+            "species": "Sunflora",
+            "types": [
+              "Grass"
+            ],
+            "nature": "Timid",
+            "item_id": 205,
+            "item": "Miracle Seed",
+            "ability": "Early Bird",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 72,
+                "name": "Mega Drain"
+              },
+              {
+                "id": 188,
+                "name": "Sludge Bomb"
+              },
+              {
+                "id": 234,
+                "name": "Morning Sun"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 190,
+            "species": "Aipom",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Run Away",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 438,
+                "name": "Double Hit"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 332,
+                "name": "Aerial Ace"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "species_id": 156,
+            "species": "Quilava",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Flash Fire",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 98,
+                "name": "Quick Attack"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              },
+              {
+                "id": 306,
+                "name": "Crush Claw"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flame Burst",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 192,
+            "species": "Sunflora",
+            "types": [
+              "Grass"
+            ],
+            "nature": "Timid",
+            "item_id": 205,
+            "item": "Miracle Seed",
+            "ability": "Early Bird",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 72,
+                "name": "Mega Drain"
+              },
+              {
+                "id": 188,
+                "name": "Sludge Bomb"
+              },
+              {
+                "id": 234,
+                "name": "Morning Sun"
+              },
+              {
+                "id": 113,
+                "name": "Light Screen"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 190,
+            "species": "Aipom",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Run Away",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 438,
+                "name": "Double Hit"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 332,
+                "name": "Aerial Ace"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "species_id": 157,
+            "species": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blazing Soul",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 731,
+                "name": "Scorch Sands"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flamethrower",
+              "move:Scorch Sands",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 184,
+            "species": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Huge Power",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 127,
+                "name": "Waterfall"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              },
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 477,
+            "species": "Ambipom",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Skill Link",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 504,
+                "name": "Tail Slap"
+              },
+              {
+                "id": 292,
+                "name": "Arm Thrust"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "4": [
+          {
+            "species_id": 157,
+            "species": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blazing Soul",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 731,
+                "name": "Scorch Sands"
+              },
+              {
+                "id": 261,
+                "name": "Will-O-Wisp"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flamethrower",
+              "move:Scorch Sands",
+              "move:Will-O-Wisp"
+            ]
+          },
+          {
+            "species_id": 184,
+            "species": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Huge Power",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 127,
+                "name": "Waterfall"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              },
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 477,
+            "species": "Ambipom",
+            "types": [
+              "Normal"
+            ],
+            "nature": "Adamant",
+            "item_id": 217,
+            "item": "Silk Scarf",
+            "ability": "Skill Link",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 504,
+                "name": "Tail Slap"
+              },
+              {
+                "id": 292,
+                "name": "Arm Thrust"
+              },
+              {
+                "id": 8,
+                "name": "Ice Punch"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Fire Punch"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "species_id": 157,
+            "species": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blazing Soul",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 731,
+                "name": "Scorch Sands"
+              },
+              {
+                "id": 284,
+                "name": "Eruption"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flamethrower",
+              "move:Scorch Sands",
+              "move:Eruption"
+            ]
+          },
+          {
+            "species_id": 184,
+            "species": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Huge Power",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 127,
+                "name": "Waterfall"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              },
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 243,
+            "species": "Raikou",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Inner Focus",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 326,
+                "name": "Extrasensory"
+              },
+              {
+                "id": 324,
+                "name": "Signal Beam"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 157,
+            "species": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "nature": "Modest",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Blazing Soul",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 731,
+                "name": "Scorch Sands"
+              },
+              {
+                "id": 284,
+                "name": "Eruption"
+              },
+              {
+                "id": 374,
+                "name": "Focus Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "move:Flamethrower",
+              "move:Scorch Sands",
+              "move:Eruption"
+            ]
+          },
+          {
+            "species_id": 184,
+            "species": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "nature": "Adamant",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Huge Power",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 127,
+                "name": "Waterfall"
+              },
+              {
+                "id": 463,
+                "name": "Play Rough"
+              },
+              {
+                "id": 357,
+                "name": "Aqua Jet"
+              },
+              {
+                "id": 280,
+                "name": "Brick Break"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Brick Break"
+            ]
+          },
+          {
+            "species_id": 243,
+            "species": "Raikou",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Inner Focus",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 326,
+                "name": "Extrasensory"
+              },
+              {
+                "id": 324,
+                "name": "Signal Beam"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "May",
+      "trainer_class": 0,
+      "gender": "female",
+      "ow_num": 15,
+      "back_sprite": 3,
+      "stars": {
+        "1": [
+          {
+            "species_id": 281,
+            "species": "Combusken",
+            "types": [
+              "Fire",
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Speed Boost",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 24,
+                "name": "Double Kick"
+              },
+              {
+                "id": 387,
+                "name": "Night Slash"
+              },
+              {
+                "id": 317,
+                "name": "Rock Tomb"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "stab_fighting",
+              "move:Fire Punch",
+              "move:Double Kick"
+            ]
+          },
+          {
+            "species_id": 296,
+            "species": "Lombre",
+            "types": [
+              "Water",
+              "Grass"
+            ],
+            "nature": "Modest",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Swift Swim",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 61,
+                "name": "Bubble Beam"
+              },
+              {
+                "id": 72,
+                "name": "Mega Drain"
+              },
+              {
+                "id": 196,
+                "name": "Icy Wind"
+              },
+              {
+                "id": 73,
+                "name": "Leech Seed"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 337,
+            "species": "Electrike",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Timid",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Lightning Rod",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 351,
+                "name": "Shock Wave"
+              },
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flame Burst"
+            ]
+          }
+        ],
+        "2": [
+          {
+            "species_id": 281,
+            "species": "Combusken",
+            "types": [
+              "Fire",
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 215,
+            "item": "Charcoal",
+            "ability": "Speed Boost",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              },
+              {
+                "id": 24,
+                "name": "Double Kick"
+              },
+              {
+                "id": 387,
+                "name": "Night Slash"
+              },
+              {
+                "id": 317,
+                "name": "Rock Tomb"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "stab_fighting",
+              "move:Fire Punch",
+              "move:Double Kick"
+            ]
+          },
+          {
+            "species_id": 296,
+            "species": "Lombre",
+            "types": [
+              "Water",
+              "Grass"
+            ],
+            "nature": "Modest",
+            "item_id": 209,
+            "item": "Mystic Water",
+            "ability": "Swift Swim",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 61,
+                "name": "Bubble Beam"
+              },
+              {
+                "id": 72,
+                "name": "Mega Drain"
+              },
+              {
+                "id": 196,
+                "name": "Icy Wind"
+              },
+              {
+                "id": 73,
+                "name": "Leech Seed"
+              }
+            ],
+            "good_vs_steel": []
+          },
+          {
+            "species_id": 337,
+            "species": "Electrike",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Timid",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Lightning Rod",
+            "ability_slot": "ability_2",
+            "ability_code": 2,
+            "moves": [
+              {
+                "id": 351,
+                "name": "Shock Wave"
+              },
+              {
+                "id": 441,
+                "name": "Flame Burst"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flame Burst"
+            ]
+          }
+        ],
+        "3": [
+          {
+            "species_id": 282,
+            "species": "Blaziken",
+            "types": [
+              "Fire",
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Speed Boost",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 434,
+                "name": "Flare Blitz"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "stab_fighting",
+              "move:Flare Blitz",
+              "move:Close Combat",
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 334,
+            "species": "Flygon",
+            "types": [
+              "Ground",
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Tinted Lens",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 200,
+                "name": "Outrage"
+              },
+              {
+                "id": 369,
+                "name": "Draco Meteor"
+              },
+              {
+                "id": 126,
+                "name": "Fire Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Earthquake",
+              "move:Fire Blast"
+            ]
+          },
+          {
+            "species_id": 338,
+            "species": "Manectric",
+            "types": [
+              "Electric"
+            ],
+            "nature": "Timid",
+            "item_id": 208,
+            "item": "Magnet",
+            "ability": "Intimidate",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              },
+              {
+                "id": 304,
+                "name": "Hyper Voice"
+              },
+              {
+                "id": 364,
+                "name": "Charge Beam"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ],
+        "5": [
+          {
+            "species_id": 282,
+            "species": "Blaziken",
+            "types": [
+              "Fire",
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Speed Boost",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 434,
+                "name": "Flare Blitz"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "stab_fighting",
+              "move:Flare Blitz",
+              "move:Close Combat",
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 334,
+            "species": "Flygon",
+            "types": [
+              "Ground",
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Tinted Lens",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 200,
+                "name": "Outrage"
+              },
+              {
+                "id": 369,
+                "name": "Draco Meteor"
+              },
+              {
+                "id": 126,
+                "name": "Fire Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Earthquake",
+              "move:Fire Blast"
+            ]
+          },
+          {
+            "species_id": 407,
+            "species": "Latias",
+            "types": [
+              "Dragon",
+              "Psychic"
+            ],
+            "nature": "Modest",
+            "item_id": 571,
+            "item": "Latiasite",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 94,
+                "name": "Psychic"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 282,
+            "species": "Blaziken",
+            "types": [
+              "Fire",
+              "Fighting"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Speed Boost",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 434,
+                "name": "Flare Blitz"
+              },
+              {
+                "id": 365,
+                "name": "Close Combat"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 157,
+                "name": "Rock Slide"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_fire",
+              "stab_fighting",
+              "move:Flare Blitz",
+              "move:Close Combat",
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 334,
+            "species": "Flygon",
+            "types": [
+              "Ground",
+              "Dragon"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Tinted Lens",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 200,
+                "name": "Outrage"
+              },
+              {
+                "id": 369,
+                "name": "Draco Meteor"
+              },
+              {
+                "id": 126,
+                "name": "Fire Blast"
+              }
+            ],
+            "good_vs_steel": [
+              "stab_ground",
+              "move:Earthquake",
+              "move:Fire Blast"
+            ]
+          },
+          {
+            "species_id": 407,
+            "species": "Latias",
+            "types": [
+              "Dragon",
+              "Psychic"
+            ],
+            "nature": "Modest",
+            "item_id": 571,
+            "item": "Latiasite",
+            "ability": "Levitate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 94,
+                "name": "Psychic"
+              },
+              {
+                "id": 57,
+                "name": "Surf"
+              },
+              {
+                "id": 359,
+                "name": "Aura Sphere"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Aura Sphere"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Lance",
+      "trainer_class": 87,
+      "gender": "male",
+      "ow_num": 74,
+      "back_sprite": 6,
+      "stars": {
+        "5": [
+          {
+            "species_id": 142,
+            "species": "Aerodactyl",
+            "types": [
+              "Rock",
+              "Flying"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Rock Head",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 429,
+                "name": "Stone Edge"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 730,
+                "name": "DualWingbeat"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 397,
+            "species": "Salamence",
+            "types": [
+              "Dragon",
+              "Flying"
+            ],
+            "nature": "Adamant",
+            "item_id": 569,
+            "item": "Salamencite",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 38,
+                "name": "Double-Edge"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              },
+              {
+                "id": 349,
+                "name": "Dragon Dance"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 536,
+            "species": "Dialga",
+            "types": [
+              "Steel",
+              "Dragon"
+            ],
+            "nature": "Modest",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Pressure",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ],
+        "6": [
+          {
+            "species_id": 149,
+            "species": "Dragonite",
+            "types": [
+              "Dragon",
+              "Flying"
+            ],
+            "nature": "Adamant",
+            "item_id": 200,
+            "item": "Leftovers",
+            "ability": "Multiscale",
+            "ability_slot": "hidden",
+            "ability_code": 0,
+            "moves": [
+              {
+                "id": 200,
+                "name": "Outrage"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 730,
+                "name": "DualWingbeat"
+              },
+              {
+                "id": 7,
+                "name": "Fire Punch"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Earthquake",
+              "move:Fire Punch"
+            ]
+          },
+          {
+            "species_id": 397,
+            "species": "Salamence",
+            "types": [
+              "Dragon",
+              "Flying"
+            ],
+            "nature": "Adamant",
+            "item_id": 569,
+            "item": "Salamencite",
+            "ability": "Intimidate",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 38,
+                "name": "Double-Edge"
+              },
+              {
+                "id": 89,
+                "name": "Earthquake"
+              },
+              {
+                "id": 395,
+                "name": "Roost"
+              },
+              {
+                "id": 349,
+                "name": "Dragon Dance"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Earthquake"
+            ]
+          },
+          {
+            "species_id": 536,
+            "species": "Dialga",
+            "types": [
+              "Steel",
+              "Dragon"
+            ],
+            "nature": "Modest",
+            "item_id": 487,
+            "item": "Adamant Orb",
+            "ability": "Pressure",
+            "ability_slot": "ability_1",
+            "ability_code": 1,
+            "moves": [
+              {
+                "id": 370,
+                "name": "Dragon Pulse"
+              },
+              {
+                "id": 449,
+                "name": "Flash Cannon"
+              },
+              {
+                "id": 85,
+                "name": "Thunderbolt"
+              },
+              {
+                "id": 53,
+                "name": "Flamethrower"
+              }
+            ],
+            "good_vs_steel": [
+              "move:Flamethrower"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

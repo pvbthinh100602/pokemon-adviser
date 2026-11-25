@@ -51,6 +51,12 @@ python logger/dev-test/dump_raid_tables.py "C:\path\to\your.gba" --json data/rai
 
 The dump script also verifies the Route 3 1-star signature (Meowth-Galar, Fletchling, Nidoran♂, Capsakid, Tandemaus). With 1 gym badge only 1-star raids appear, at level 20–25.
 
+The logger also reads the **partner selection screen**. While that screen is open it writes a `raid_partners` event and fills `raid.partners` in the snapshot (trainer name, each Pokemon's species, ability, moves, item, and the star's level range). If you are already on that screen, File > Reset and the list should appear after the ROM tables finish scanning (about a second). The static list of every partner is in `data/raid_partners.json`; regenerate with:
+
+```
+python logger/dev-test/dump_raid_partners.py "C:\\path\\to\\your.gba" --json data/raid_partners.json
+```
+
 RAM used (CFRU, verified in this ROM): `gRaidBattleSpecies` 0x0203E04C, `gRaidBattleStars` 0x0203E04E, `gRaidBattleLevel` 0x0203E04F. `FLAG_RAID_BATTLE` (0x919) marks a raid battle.
 
 ## Notes
