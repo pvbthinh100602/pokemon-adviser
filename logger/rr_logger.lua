@@ -6,7 +6,7 @@
 
     <OUT_DIR>/rr_events.jsonl    one JSON event per line (appended, flushed each write)
     <OUT_DIR>/rr_snapshot.json   current full state (overwritten)
-    <OUT_DIR>/rr_rom_tables.json what the ROM-table scanner found (diagnostics)
+    <OUT_DIR>/rr_rom_tables.json name tables plus the ROM raid encounter dump
 
   Load it in mGBA: Tools > Scripting... > File > Load script. Keep that window open.
   It only READS memory; it never writes to the game.
@@ -49,12 +49,30 @@ local A = {
   -- CFRU pins the save blocks here (comments in CFRU include/global.h); used as fallback
   SB1_FIXED             = 0x0202552C,
   SB2_FIXED             = 0x02024588,
+  -- CFRU include/new/ram_locs.h (verified: these literals exist in the RR 4.1 ROM)
+  gExpandedFlags        = 0x0203B174, -- bitflags for ids 0x900..0x18FF (0x200 bytes)
+  gRaidBattleSpecies    = 0x0203E04C, -- u16, written when a den is interacted with
+  gRaidBattleStars      = 0x0203E04E, -- u8
+  gRaidBattleLevel      = 0x0203E04F, -- u8
 }
 local MAIN_INBATTLE_OFF = 0x439      -- gMain.inBattle is bit 1 of this byte
 local SB1_POS, SB1_LOC, SB1_MONEY, SB1_FLAGS = 0x0000, 0x0004, 0x0290, 0x0EE0
 local SB2_NAME, SB2_GENDER, SB2_TID, SB2_PLAYTIME, SB2_KEY = 0x00, 0x08, 0x0A, 0x0E, 0xF20
 local FLAG_BADGE01 = 0x820
+local FLAG_DYNAMAX_BATTLE = 0x918
+local FLAG_RAID_BATTLE    = 0x919
+local FIRST_RAID_BATTLE_FLAG = 0x1800 -- + (mapsec - MAPSEC_DYNAMIC) = den already cleared
+local MAPSEC_DYNAMIC = 0x57
 local MON_SIZE = 100
+local RAID_STRUCT_SIZE = 30
+local RAID_STAR_COUNT = 7
+local RAID_ROW_SIZE = RAID_STAR_COUNT * 8
+local RAID_MAPSEC_COUNT = 0xC4 - MAPSEC_DYNAMIC
+local HINT_RAID_TABLE = 0x1134C34          -- gRaidsByMapSection (verified RR 4.1)
+local HINT_RAID_STARS_BY_BADGES = 0x1147640
+local HINT_RAID_LEVEL_RANGES = 0x1147654    -- includes a {0,0} slot for 0 stars
+local RAID_ABILITY = {[0]="hidden",[1]="ability_1",[2]="ability_2",[3]="random_1_2",[4]="random_all"}
+local RAID_DROP_RATES = {100,80,80,50,50,30,30,25,25,5,4,1}
 
 ---------------------------------------------------------------------------
 -- Static tables
@@ -200,6 +218,27 @@ local function u16(s, off) return string.unpack("<I2", s, off + 1) end
 local function u32(s, off) return string.unpack("<I4", s, off + 1) end
 local function hex(n) return n and string.format("0x%X", n) or nil end
 local function isEwram(p) return p and p >= 0x02000000 and p < 0x02040000 end
+local function isRom(p) return p and p >= 0x08000000 and p < 0x0A000000 end
+
+-- Vanilla flags live in SaveBlock1; CFRU expanded flags 0x900+ are a 0x200-byte
+-- bitfield at gExpandedFlags (covers 0x900..0x18FF, including raid-cleared flags).
+local function flagGet(id, sb1)
+  if not id or id == 0 then return false end
+  local addr, bitoff
+  if id >= 0x900 then
+    local off = id - 0x900
+    if off >= 0x1000 then return false end
+    addr = A.gExpandedFlags + (off >> 3)
+    bitoff = off & 7
+  else
+    if not sb1 then return false end
+    addr = sb1 + SB1_FLAGS + (id >> 3)
+    bitoff = id & 7
+  end
+  local b = r8(addr)
+  if not b then return false end
+  return ((b >> bitoff) & 1) == 1
+end
 
 ---------------------------------------------------------------------------
 -- Output files
@@ -456,6 +495,173 @@ local function baseStats(species)
   }
 end
 
+local function typeName(id)
+  return id and TYPES[id] or nil
+end
+
+-- Regional forms share a truncated 11-char ROM name with the base species.
+-- Qualify them by type when a lower id already uses the same display name.
+local function qualifySpecies(id)
+  local n = speciesName(id)
+  if not n then return nil end
+  local bs = baseStats(id)
+  if not bs then return n end
+  local t1, t2 = typeName(bs.type1), typeName(bs.type2)
+  local typ = t1
+  if t2 and t2 ~= t1 then typ = t1 .. "/" .. t2 end
+  -- Walk a few well-known aliases; otherwise append types on a name collision
+  -- with a lower species id (checked cheaply against the cached first use).
+  if not T.speciesFirstId then return n end
+  local first = T.speciesFirstId[n]
+  if not first or first == id then return n end
+  if n == "Meowth" and t1 == "Steel" then return "Meowth-Galar" end
+  if n == "Meowth" and t1 == "Dark" then return "Meowth-Alola" end
+  if n == "Persian" and t1 == "Dark" then return "Persian-Alola" end
+  if typ then return n .. " (" .. typ .. ")" end
+  return n
+end
+
+local function speciesTypes(id)
+  local bs = baseStats(id)
+  if not bs then return arr() end
+  local t = arr()
+  t[1] = typeName(bs.type1)
+  if bs.type2 and bs.type2 ~= bs.type1 then t[2] = typeName(bs.type2) end
+  return t
+end
+
+local function buildSpeciesFirstIds()
+  T.speciesFirstId = {}
+  if not T.species or not T.species.entries then return end
+  for id = 1, T.species.entries do
+    local n = speciesName(id)
+    if n and not n:match("^#") and T.speciesFirstId[n] == nil then
+      T.speciesFirstId[n] = id
+    end
+  end
+end
+
+local function parseRaidEntry(off)
+  local blob = rr(ROM + off, RAID_STRUCT_SIZE)
+  if not blob then return nil end
+  local sid, item, ability = string.unpack("<I2I2I1", blob, 1)
+  if not sid or sid == 0 or sid > 1375 then return nil end
+  local drops = arr()
+  for i = 0, 11 do
+    local did = u16(blob, 6 + i * 2)
+    if did and did ~= 0 then
+      drops[#drops + 1] = { item_id = did, item = itemName(did), rate_percent = RAID_DROP_RATES[i + 1] }
+    end
+  end
+  return {
+    species_id = sid,
+    species = qualifySpecies(sid) or speciesName(sid),
+    types = speciesTypes(sid),
+    held_item_id = (item ~= 0) and item or nil,
+    held_item = (item ~= 0) and itemName(item) or nil,
+    ability = RAID_ABILITY[ability] or tostring(ability),
+    ability_code = ability,
+    drops = drops,
+  }
+end
+
+local function loadRaidTables()
+  local base = HINT_RAID_TABLE
+  -- Verify Route 3 (mapsec 0x67, index 16) 1-star: 5 mons, first is Galarian Meowth.
+  local slot = base + (0x67 - MAPSEC_DYNAMIC) * RAID_ROW_SIZE + 8
+  local ptr, amount = r32(ROM + slot), r16(ROM + slot + 4)
+  local off = isRom(ptr) and (ptr - ROM) or nil
+  local first = off and r16(ROM + off) or nil
+  local ok = (amount == 5 and first == 1208)
+  if not ok then
+    T.raids = { found = false, reason = "Route 3 1-star signature mismatch",
+      hint = hex(base), amount = amount, first_species = first }
+    return false
+  end
+  local dens = arr()
+  for i = 0, RAID_MAPSEC_COUNT - 1 do
+    local mapsec = MAPSEC_DYNAMIC + i
+    local stars, ptrs, nstars = {}, {}, 0
+    local uniquePtr = nil
+    local shared = true
+    for star = 1, RAID_STAR_COUNT - 1 do
+      local eoff = base + i * RAID_ROW_SIZE + star * 8
+      local p, amt = r32(ROM + eoff), r16(ROM + eoff + 4)
+      local roff = isRom(p) and (p - ROM) or nil
+      if roff and amt and amt > 0 and amt <= 40 then
+        local raids = arr()
+        for n = 0, amt - 1 do
+          local rec = parseRaidEntry(roff + n * RAID_STRUCT_SIZE)
+          if not rec then break end
+          raids[#raids + 1] = rec
+        end
+        if #raids > 0 then
+          stars[tostring(star)] = raids
+          nstars = nstars + 1
+          if uniquePtr == nil then uniquePtr = roff
+          elseif uniquePtr ~= roff then shared = false end
+        end
+      end
+    end
+    if nstars > 0 then
+      dens[#dens + 1] = {
+        mapsec = mapsec, mapsec_hex = hex(mapsec), name = MAPSEC[mapsec],
+        stars = stars, shared_pool_across_stars = shared,
+      }
+    end
+  end
+  local starsByBadges, levelRanges = {}, {}
+  local sb = rr(ROM + HINT_RAID_STARS_BY_BADGES, 20)
+  if sb then
+    for b = 0, 9 do
+      starsByBadges[tostring(b)] = arr({ u8(sb, b * 2), u8(sb, b * 2 + 1) })
+    end
+  end
+  local lr = rr(ROM + HINT_RAID_LEVEL_RANGES, 14)
+  if lr then
+    for s = 1, 6 do
+      levelRanges[tostring(s)] = arr({ u8(lr, s * 2), u8(lr, s * 2 + 1) })
+    end
+  end
+  T.raids = {
+    found = true, via = "hint+route3-verify", rom_offset = hex(base),
+    den_count = #dens, dens = dens, stars_by_badge_count = starsByBadges,
+    level_ranges_by_stars = levelRanges,
+    ram = { species = hex(A.gRaidBattleSpecies), stars = hex(A.gRaidBattleStars),
+            level = hex(A.gRaidBattleLevel) },
+  }
+  -- index by mapsec for snapshot / events
+  T.raidsByMapsec = {}
+  for _, d in ipairs(dens) do T.raidsByMapsec[d.mapsec] = d end
+  return true
+end
+
+local function denPool(mapsec)
+  return T.raidsByMapsec and T.raidsByMapsec[mapsec] or nil
+end
+
+local function raidMonFromRam(s)
+  local sid = s.raid_species
+  if not sid or sid == 0 then return nil end
+  local rec = { species_id = sid, species = qualifySpecies(sid) or speciesName(sid),
+    types = speciesTypes(sid), stars = s.raid_stars, level = s.raid_level }
+  local pool = denPool(s.mapsec)
+  local starKey = s.raid_stars and tostring(s.raid_stars) or nil
+  local list = pool and starKey and pool.stars and pool.stars[starKey]
+  if list then
+    for _, e in ipairs(list) do
+      if e.species_id == sid then
+        rec.ability = e.ability
+        rec.ability_code = e.ability_code
+        rec.held_item = e.held_item
+        rec.drops = e.drops
+        break
+      end
+    end
+  end
+  return rec
+end
+
 ---------------------------------------------------------------------------
 -- Pokemon parsing. CFRU stores party data UNENCRYPTED in fixed order
 -- (Growth, Attacks, EVs, Misc) - see CFRU include/pokemon.h struct Pokemon.
@@ -657,6 +863,18 @@ local function readState()
   else
     s.outcome = r8(A.gBattleOutcome) or 0
   end
+
+  -- Raid den (CFRU). Species/stars/level are set when the den script runs
+  -- (Special 0x115+), and stay until the next den or a new calculation.
+  s.raid_species = r16(A.gRaidBattleSpecies) or 0
+  s.raid_stars   = r8(A.gRaidBattleStars) or 0
+  s.raid_level   = r8(A.gRaidBattleLevel) or 0
+  s.raid_battle_flag = flagGet(FLAG_RAID_BATTLE, sb1)
+  s.dynamax_flag     = flagGet(FLAG_DYNAMAX_BATTLE, sb1)
+  if s.mapsec and s.mapsec >= MAPSEC_DYNAMIC then
+    s.raid_cleared = flagGet(FIRST_RAID_BATTLE_FLAG + (s.mapsec - MAPSEC_DYNAMIC), sb1)
+  end
+  s.is_raid = s.in_battle and s.raid_battle_flag and not s.is_trainer
   return s
 end
 
@@ -806,20 +1024,79 @@ local function diffParty(p, s)
   end
 end
 
+local function battleKind(s, rec)
+  if (s and s.is_raid) or (rec and rec.raid) then return "raid" end
+  if (s and s.is_trainer) or (rec and rec.trainer) then return "trainer" end
+  return "wild"
+end
+
+local function raidEventPayload(s)
+  local ev = {
+    species_id = (s.raid_species ~= 0) and s.raid_species or nil,
+    species = nil,
+    types = nil,
+    stars = (s.raid_stars ~= 0) and s.raid_stars or nil,
+    level = (s.raid_level ~= 0) and s.raid_level or nil,
+    cleared = s.raid_cleared,
+    location = locBrief(s),
+  }
+  local mon = raidMonFromRam(s)
+  if mon then
+    ev.species = mon.species
+    ev.types = mon.types
+    ev.ability = mon.ability
+    ev.ability_code = mon.ability_code
+    ev.held_item = mon.held_item
+    ev.drops = mon.drops
+  end
+  local pool = denPool(s.mapsec)
+  if pool then
+    ev.den = pool.name or ev.location and ev.location.name
+    ev.shared_pool_across_stars = pool.shared_pool_across_stars
+    -- Names/types/ability only (no drop lists) so snapshots stay small.
+    local possible = {}
+    for star, raids in pairs(pool.stars) do
+      local list = arr()
+      for i, e in ipairs(raids) do
+        list[i] = { species_id = e.species_id, species = e.species, types = e.types, ability = e.ability }
+      end
+      possible[star] = list
+    end
+    ev.possible = possible
+  end
+  return ev
+end
+
+local function maybeEmitRaidDen(p, s, reason)
+  local cur = s.raid_species or 0
+  if cur == 0 and s.raid_stars == 0 and s.raid_level == 0 then return end
+  if p and p.raid_species == s.raid_species and p.raid_stars == s.raid_stars
+     and p.raid_level == s.raid_level then
+    return
+  end
+  local ev = raidEventPayload(s)
+  ev.reason = reason or "den_updated"
+  emit("raid_den", ev)
+end
+
 local function onBattleStart(s)
   battle = { start_frame = frameNo, trainer = s.is_trainer, double = s.is_double,
-             opponent_trainer = s.opponent_trainer, flags = s.battle_flags }
+             opponent_trainer = s.opponent_trainer, flags = s.battle_flags, raid = s.is_raid }
   lastOutcomeInBattle = 0
-  emit("battle_start", {
-    kind = s.is_trainer and "trainer" or "wild", double = s.is_double,
+  local ev = {
+    kind = battleKind(s), double = s.is_double,
     battle_flags = hex(s.battle_flags), trainer_id = s.opponent_trainer,
-    opponents = enemyBrief(s.enemy), party = partyBrief(s.party), location = locBrief(s) })
+    opponents = enemyBrief(s.enemy), party = partyBrief(s.party), location = locBrief(s) }
+  if s.is_raid or (s.raid_species or 0) ~= 0 then
+    ev.raid = raidEventPayload(s)
+  end
+  emit("battle_start", ev)
 end
 
 local function onBattleEnd(p, s)
   local oc = (s.outcome ~= 0) and s.outcome or lastOutcomeInBattle
   local name = OUTCOMES[oc & 0x7F] or tostring(oc)
-  local ev = { outcome = name, outcome_code = oc, kind = battle and (battle.trainer and "trainer" or "wild"),
+  local ev = { outcome = name, outcome_code = oc, kind = battleKind(s, battle),
                trainer_id = battle and battle.opponent_trainer,
                seconds = battle and math.floor((frameNo - battle.start_frame) / 59.7275) or nil,
                opponents = enemyBrief(p.enemy), party = partyBrief(s.party) }
@@ -848,6 +1125,7 @@ local function diff(p, s)
   if p.map_group ~= s.map_group or p.map_num ~= s.map_num then
     emit("map_change", { from = locBrief(p), to = locBrief(s) })
   end
+  maybeEmitRaidDen(p, s, "den_updated")
   -- battle transitions
   if s.in_battle and not p.in_battle then onBattleStart(s) end
   if s.in_battle and s.outcome and s.outcome ~= 0 then
@@ -892,7 +1170,7 @@ local function writeSnapshot(s, force)
     party[i] = c
   end
   local snap = {
-    updated = now(), frame = frameNo, script = "rr_logger.lua v1",
+    updated = now(), frame = frameNo, script = "rr_logger.lua v2",
     game = { title = emu:getGameTitle(), code = emu:getGameCode() },
     ready = s.ready, player = s.player_name, gender = s.player_gender, trainer_id = s.trainer_id,
     play_time = s.play_time, money = s.money,
@@ -905,8 +1183,17 @@ local function writeSnapshot(s, force)
     recent_events = recentEvents,
   }
   if s.in_battle then
-    snap.battle = { kind = s.is_trainer and "trainer" or "wild", double = s.is_double,
+    snap.battle = { kind = battleKind(s), double = s.is_double,
       trainer_id = s.opponent_trainer, flags = hex(s.battle_flags), enemy = enemyBrief(s.enemy) }
+    if s.is_raid or (s.raid_species or 0) ~= 0 then
+      snap.battle.raid = raidEventPayload(s)
+    end
+  end
+  do
+    local raid = raidEventPayload(s)
+    -- Always include current RAM + the pool for this map, even if the den
+    -- hasn't been opened yet (so the adviser can see what it can contain).
+    snap.raid = raid
   end
   local text = json(snap)
   -- skip rewrite if only timestamp/frame changed
@@ -933,6 +1220,9 @@ local function writeTablesInfo()
   info.sample = { species_1 = speciesName(1), species_4 = speciesName(4), move_1 = moveName(1),
                   ability_1 = abilityName(1), ability_200 = abilityName(200), move_500 = moveName(500),
                   item_1 = itemName(1), item_500 = itemName(500) }
+  if T.raids then
+    info.raids = T.raids
+  end
   local fh = io.open(outDir .. "rr_rom_tables.json", "w")
   if fh then fh:write(json(info)); fh:close() end
   return info
@@ -968,6 +1258,7 @@ local function poll()
   if not prev then
     emit("game_loaded", { player = s.player_name, play_time = s.play_time, badges = s.badges,
       money = s.money, location = locBrief(s), party = partyBrief(s.party), data_mode = cryptMode })
+    maybeEmitRaidDen(nil, s, "script_loaded")
     if s.in_battle then onBattleStart(s) end
   elseif s.play_seconds and prev.play_seconds and
          (s.play_seconds < prev.play_seconds or s.play_seconds - prev.play_seconds > 120) then
@@ -995,8 +1286,14 @@ local function onFrame()
     if not ok then T.scanDone = true logError("scan", err) end
     if T.scanDone then
       nameCache = {}
+      pcall(buildSpeciesFirstIds)
+      pcall(loadRaidTables)
       local ok2, info = pcall(writeTablesInfo)
-      if ok2 then emit("rom_tables", info) end
+      if ok2 then emit("rom_tables", { found = info and info.raids and info.raids.found,
+        den_count = info and info.raids and info.raids.den_count,
+        raids_offset = info and info.raids and info.raids.rom_offset,
+        species = info and info.species, moves = info and info.moves,
+        abilities = info and info.abilities, items = info and info.items }) end
     end
   end
   if frameNo < nextPoll then return end
@@ -1030,7 +1327,7 @@ rrLoggerCallbacks = {
   callbacks:add("shutdown", function()
     if eventsFh then pcall(emit, "emulator_shutdown", nil); pcall(eventsFh.close, eventsFh); eventsFh = nil end
     initialized = false; prev = nil; T.scanDone = false; T.scanFrom = 0
-    for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats" }) do T[k] = nil end
+    for _, k in ipairs({ "species", "moves", "abilities", "items", "baseStats", "raids", "raidsByMapsec", "speciesFirstId" }) do T[k] = nil end
     T.candidates = { species = {}, moves = {}, abilities = {}, items = {} }
     nameCache = {}
   end),
