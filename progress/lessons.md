@@ -42,3 +42,13 @@ Takeaways:
 - Phanpy's Ice Shard is a strong closer versus Rock/Flying and Rock/Ground.
 
 - Data check: the trainer dump lists Varoom as Overcoat @ Air Balloon; the logger read ability id 100 as Solid Rock. Neither matches the 'Filter' used in the pre-fight plan. The dump is now the source for boss sets; treat logger ability names for enemies as a cross-check.
+
+## Super Nerd Miguel (Mt. Moon B2F) - loss, Nov 29, 2026
+
+- **It is a double battle.** The dump does not flag it; plans assumed singles. Check `battle_flags` / `double` in the log and plan for doubles when unsure.
+- **Data mismatches vs the dump:** Thwackey has **Grassy Surge** (dump: Overgrow), Sableye has **Prankster** (dump: Frisk). Levels were 17, not 19.
+- Grassy Surge sets Grassy Terrain on entry: it activates Bibarel's Grassy Seed (+Def), heals every grounded mon each turn, and **halves Magnitude** (Numel's Magnitude did 4 damage).
+- Prankster Will-O-Wisp is priority: it burned our physical attackers (Meowth, Phanpy, Floragato) before they moved.
+- Lead Numel + Lunatone worked: Thwackey and Voltorb-Hisui went down quickly.
+- The loss came in the back half: Bibarel (Simple Curse) was left alive while we hit Sableye, then swept with Aqua Jet / Quick Attack.
+- Rematch plan: keep Lunatone and Floragato healthy for the back half; the moment Bibarel appears, put **both** attacks on Bibarel (Floragato Seed Bomb, Lunatone Psybeam, Numel Lava Plume - special moves ignore burn). Do not use Magnitude while terrain is up. Ignore Sableye until Bibarel is down; never Psybeam Sableye (Dark is immune).
