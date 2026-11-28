@@ -52,3 +52,10 @@ Takeaways:
 - Lead Numel + Lunatone worked: Thwackey and Voltorb-Hisui went down quickly.
 - The loss came in the back half: Bibarel (Simple Curse) was left alive while we hit Sableye, then swept with Aqua Jet / Quick Attack.
 - Rematch plan: keep Lunatone and Floragato healthy for the back half; the moment Bibarel appears, put **both** attacks on Bibarel (Floragato Seed Bomb, Lunatone Psybeam, Numel Lava Plume - special moves ignore burn). Do not use Magnitude while terrain is up. Ignore Sableye until Bibarel is down; never Psybeam Sableye (Dark is immune).
+
+## Rocket Admin Archer (Mt. Moon B2F) - loss, Nov 29, 2026
+
+- Walked in right after Miguel without healing; Meowth and Lunatone were already fainted, Floragato started at 15/65.
+- Singles. Team, abilities and items matched the dump (Glimmet Lv18 Toxic Debris / Shuca Berry, Houndour Lv19, Mightyena Lv21).
+- Toxic Debris: hitting Glimmet with physical moves (Phanpy Rollout) laid Toxic Spikes, poison chip on every grounded switch-in.
+- Rematch plan: heal first. Lead Lunatone (Levitate: immune to Mud Shot and Toxic Spikes) and Psybeam Glimmet (special, does not trigger Toxic Debris). Numel Magnitude into Houndour (Numel resists Incinerate). Mightyena: Numel / Meowth Metal Claw (resists Ice Fang) / Phanpy Rollout. Keep Floragato and Lunatone away from Mightyena and Houndour.
