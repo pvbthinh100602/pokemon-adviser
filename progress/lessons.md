@@ -59,3 +59,10 @@ Takeaways:
 - Singles. Team, abilities and items matched the dump (Glimmet Lv18 Toxic Debris / Shuca Berry, Houndour Lv19, Mightyena Lv21).
 - Toxic Debris: hitting Glimmet with physical moves (Phanpy Rollout) laid Toxic Spikes, poison chip on every grounded switch-in.
 - Rematch plan: heal first. Lead Lunatone (Levitate: immune to Mud Shot and Toxic Spikes) and Psybeam Glimmet (special, does not trigger Toxic Debris). Numel Magnitude into Houndour (Numel resists Incinerate). Mightyena: Numel / Meowth Metal Claw (resists Ice Fang) / Phanpy Rollout. Keep Floragato and Lunatone away from Mightyena and Houndour.
+
+## Rocket Admin Archer - second loss, then win (Nov 29, 2026)
+
+- **Archer leads Mightyena**, not Glimmet as the dump order suggested. The rematch plan (Lunatone lead to Psybeam Glimmet) was built on the wrong lead; Psybeam does nothing to Dark.
+- Loss 2: Mightyena used Howl, then OHKO'd every switch-in (Meowth, Numel, Phanpy, Lunatone). Passive switching into a boosted Mightyena feeds it kills. Berry Juice healed it +20 once.
+- Win: Lunatone Rock Slide chipped Mightyena, Floragato finished it; Numel Magnitude OHKO'd Houndour; Numel then traded with Glimmet and Floragato finished Glimmet. Meowth and Phanpy were not needed.
+- Lesson: when a boss lead can set up (Howl, Curse), hit it hard from turn 1 and do not switch into it after a boost. Confirm the lead from the log after the first attempt instead of trusting dump order.
